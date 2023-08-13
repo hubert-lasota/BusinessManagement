@@ -5,12 +5,17 @@ import java.util.Objects;
 public class EmployeeLogin  implements Comparable<EmployeeLogin> {
     private String login;
     private String password;
-    private EmployeeData employeeData;
+    private Long employeeID;
 
-    public EmployeeLogin(String login, String password, EmployeeData employeeData) {
+    public EmployeeLogin(String login, String password) {
         this.login = login;
         this.password = password;
-        this.employeeData = employeeData;
+    }
+
+    public EmployeeLogin(String login, String password, Long employeeID) {
+        this.login = login;
+        this.password = password;
+        this.employeeID = employeeID;
     }
 
     public String getLogin() {
@@ -29,12 +34,12 @@ public class EmployeeLogin  implements Comparable<EmployeeLogin> {
         this.password = password;
     }
 
-    public EmployeeData getEmployeeData() {
-        return employeeData;
+    public Long getEmployeeID() {
+        return employeeID;
     }
 
-    public void setEmployeeData(EmployeeData employeeData) {
-        this.employeeData = employeeData;
+    public void setEmployeeID(Long employeeID) {
+        this.employeeID = employeeID;
     }
 
     @Override
