@@ -2,34 +2,33 @@ package org.Business.employee;
 
 import java.time.LocalDate;
 
-
-public class EmployeeData {
+public class Employee {
     private final int ID;
     private static int incrementID = 1;
 
-    private final String name;
-    private final String lastname;
+    private final String firstName;
+    private final String lastName;
     private final LocalDate dateOfBirth;
-    private final String profession;
+    private final EmployeeProffesion profession;
     private final double salary;
     private final Address address;
 
     public static class Builder {
-        private final String name;
-        private final String lastname;
+        private final String firstName;
+        private final String lastName;
         private final LocalDate dateOfBirth;
 
-        private String profession = "none";
+        private EmployeeProffesion profession = EmployeeProffesion.NONE;
         private double salary = 0;
         private Address address = Address.emptyAddress();
 
-        public Builder(String name, String lastname, LocalDate dateOfBirth) {
-            this.name = name;
-            this.lastname = lastname;
+        public Builder(String firstName, String lastName, LocalDate dateOfBirth) {
+            this.firstName = firstName;
+            this.lastName = lastName;
             this.dateOfBirth = dateOfBirth;
         }
 
-        public Builder profession(String profession) {
+        public Builder profession(EmployeeProffesion profession) {
             this.profession = profession;
             return this;
         }
@@ -47,15 +46,15 @@ public class EmployeeData {
             return this;
         }
 
-        public EmployeeData build() {
-            return new EmployeeData(this);
+        public Employee build() {
+            return new Employee(this);
         }
     }
 
-    private EmployeeData(Builder builder) {
+    private Employee(Builder builder) {
         this.ID = incrementID++;
-        this.name = builder.name;
-        this.lastname = builder.lastname;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
         this.dateOfBirth = builder.dateOfBirth;
         this.profession = builder.profession;
         this.salary = builder.salary;
@@ -97,9 +96,9 @@ public class EmployeeData {
     @Override
     public String toString() {
         return  "ID[" + ID + "]\n"
-                + name + " " + lastname + "\n"
+                + firstName + " " + lastName + "\n"
                 + "Date of birth: " + dateOfBirth.toString() + "\n"
-                + profession + "\n" + "Salary: " + salary + "PLN\n"
+                + profession.toString().toLowerCase() + "\n" + "Salary: " + salary + "PLN\n"
                 + address.toString();
     }
 
