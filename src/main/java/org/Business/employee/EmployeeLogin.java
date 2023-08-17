@@ -47,7 +47,7 @@ public class EmployeeLogin  implements Comparable<EmployeeLogin> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmployeeLogin that = (EmployeeLogin) o;
-        return login.equals(that.login);
+        return login.equals(that.login) && password.equals(that.password);
     }
 
     @Override
