@@ -3,8 +3,8 @@ package org.Business.employee;
 import java.time.LocalDate;
 
 public class Employee {
-    private final int ID;
-    private static int incrementID = 1;
+    private final long ID;
+    private static long incrementID = 1;
 
     private final String firstName;
     private final String lastName;
@@ -87,7 +87,7 @@ public class Employee {
 
     }
 
-    public int getID() {
+    public long getID() {
         return ID;
     }
 
