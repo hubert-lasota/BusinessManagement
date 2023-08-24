@@ -9,16 +9,16 @@ public class Employee {
     private final String firstName;
     private final String lastName;
     private final LocalDate dateOfBirth;
-    private final EmployeeProffesion profession;
-    private final double salary;
-    private final Address address;
+    private EmployeeProfession profession;
+    private double salary;
+    private Address address;
 
     public static class Builder {
         private final String firstName;
         private final String lastName;
         private final LocalDate dateOfBirth;
 
-        private EmployeeProffesion profession = EmployeeProffesion.NONE;
+        private EmployeeProfession profession = EmployeeProfession.NONE;
         private double salary = 0;
         private Address address = Address.emptyAddress();
 
@@ -28,7 +28,7 @@ public class Employee {
             this.dateOfBirth = dateOfBirth;
         }
 
-        public Builder profession(EmployeeProffesion profession) {
+        public Builder profession(EmployeeProfession profession) {
             this.profession = profession;
             return this;
         }
@@ -39,7 +39,7 @@ public class Employee {
         }
 
         public Builder address(String addressLine, String postalCode, String city, String country) {
-            this.address.addressLine = addressLine;
+            this.address.streetWithNumber = addressLine;
             this.address.postalCode = postalCode;
             this.address.city = city;
             this.address.country = country;
@@ -62,13 +62,13 @@ public class Employee {
     }
 
     private static class Address {
-        private String addressLine; // street including its number
+        private String streetWithNumber;
         private String postalCode;
         private String city;
         private String country;
 
-        private Address(String addressLine, String postalCode, String city, String country) {
-            this.addressLine = addressLine;
+        private Address(String streetWithNumber, String postalCode, String city, String country) {
+            this.streetWithNumber = streetWithNumber;
             this.postalCode = postalCode;
             this.city = city;
             this.country = country;
@@ -80,7 +80,7 @@ public class Employee {
 
         @Override
         public String toString() {
-            return addressLine + "\n"
+            return streetWithNumber + "\n"
                     + postalCode + " " + city + "\n"
                     + country;
         }
