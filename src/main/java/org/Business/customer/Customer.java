@@ -67,4 +67,12 @@ public class Customer {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return ID + ". " + name + "\n"
+                + address.streetWithNumber + "\n"
+                + address.postalCode + " " + address.city + "\n"
+                + address.country;
+    }
 }
