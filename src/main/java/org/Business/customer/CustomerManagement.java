@@ -34,7 +34,6 @@ public class CustomerManagement {
         return customers;
     }
 
-    // TODO make operations on individual customers like change name/address
     public static void customersMenu() {
         showCustomersMenuInterface();
         int inputResult = userInput.nextInt();
@@ -47,7 +46,7 @@ public class CustomerManagement {
                 findCustomers();
                 break;
             case 3:
-                // TODO addCustomer
+                addCustomer();
                 break;
             case 4:
                 // TODO deleteCustomer
@@ -59,7 +58,32 @@ public class CustomerManagement {
         }
     }
 
-    // TODO program ends after this method. Fix that bug
+    private static void addCustomer() {
+        System.out.println("Enter customer data!");
+        System.out.print("Name: ");
+        String name = userInput.nextLine();
+        System.out.print("Street with number: ");
+        String streetWithNumber = userInput.nextLine();
+        System.out.print("Postal code: ");
+        String postalCode = userInput.nextLine();
+        System.out.print("City: ");
+        String city = userInput.nextLine();
+        System.out.print("Country: ");
+        String country = userInput.nextLine();
+
+        Customer.Address address = new Customer.Address(streetWithNumber, postalCode, city, country);
+        Customer customer = new Customer(name, address);
+
+        if(!customers.contains(customer)) {
+            System.out.println("\nCUSTOMER ADDED SUCCESSFULLY!\n");
+            customers.add(customer);
+            customersMenu();
+        } else {
+            System.out.println("\nCUSTOMER EXISTS IN DATABASE!\n");
+            customersMenu();
+        }
+    }
+
     private static void findCustomers() {
         System.out.println("Do you want to search by:");
         System.out.println("1. Name\t2. ID\t3. Street\t4. Postal Code\t5. City\t6. Country");
