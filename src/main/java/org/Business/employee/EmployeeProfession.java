@@ -1,6 +1,6 @@
 package org.Business.employee;
 
-public enum EmployeeProffesion {
+public enum EmployeeProfession {
     CEO,
     VICE_CEO,
     DIRECTOR,
@@ -11,5 +11,6 @@ public enum EmployeeProffesion {
     FRONTEND_DEVELOPER,
     BACKEND_DEVELOPER,
     DEVOPS,
+    ADMIN,
     NONE
 }
