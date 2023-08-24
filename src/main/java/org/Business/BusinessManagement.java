@@ -1,24 +1,22 @@
 package org.Business;
 
-import org.Business.customer.Customer;
+import org.Business.customer.CustomerManagement;
 import org.Business.employee.Employee;
-import org.Business.employee.EmployeeLogin;
-import org.Business.order.Order;
-import org.Business.product.Product;
+import org.Business.employee.EmployeeAccount;
+import org.Business.order.OrderManagement;
+import org.Business.product.ProductManagement;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class BusinessManagement {
-    private static final Scanner userInput = new Scanner(System.in);
     private static final List<Employee> employees = new ArrayList<>();
-    private static final List<EmployeeLogin> employeeLogins = new ArrayList<>();
-    private static final List<Customer> customers = new ArrayList<>();
-    private static final List<Product> products = new ArrayList<>();
-    private static final List<Order> orders = new ArrayList<>();
+    private static final List<EmployeeAccount> employeeAccounts = new ArrayList<>();
+
 
     private BusinessManagement() {}
+
 
     public static void saveEmployee(Employee employee) {
         if(employees.contains(employee)) {
@@ -45,58 +43,71 @@ public class BusinessManagement {
         return true;
     }
 
-    public static void createEmployeeLogin(String login, String password, Long employeeID) {
-        EmployeeLogin employeeLogin = new EmployeeLogin(login, password, employeeID);
-        if(!employeeLogins.contains(employeeLogin))
-            employeeLogins.add(employeeLogin);
+    public static void addEmployeeAccount(String login, String password, Long employeeID) {
+        EmployeeAccount employeeAccount = new EmployeeAccount(login, password, employeeID);
+        if(!employeeAccounts.contains(employeeAccount))
+            employeeAccounts.add(employeeAccount);
         else
-            System.out.println("EmployeeLogin exists. You can only change login or password.");
+            System.out.println("EmployeeAccount exists. You can only change login or password.");
     }
 
 
-    public static boolean logIn() {
-        boolean result;
-        for(int i = 0; i < 3; i++) {
-            System.out.print("LOGIN: ");
-            String login = userInput.next();
 
-            System.out.print("PASSWORD: ");
-            String password = userInput.next();
-            result = doesLoginExist(login, password);
-            if(result) return true;
-        }
-        return false;
+    public static EmployeeAccount logIn() {
+        boolean result;
+        EmployeeAccount employeeAccount;
+        Scanner userInput = new Scanner(System.in);
+            for (int i = 0; i < 3; i++) {
+                System.out.print("LOGIN: ");
+                String login = userInput.nextLine();
+
+                System.out.print("PASSWORD: ");
+                String password = userInput.nextLine();
+                employeeAccount = new EmployeeAccount(login, password);
+                result = doesAccountExist(employeeAccount);
+                if (result) {
+                    return employeeAccount;
+                }
+            }
+
+        return null;
     }
 
     public static int numberOfEmployees() {
         return employees.size();
     }
 
-    public static void homeMenuController() {
+    public static void homeMenu() {
         showHomeMenuInterface();
-        switch(userInput.nextInt()) {
-            case 1:
-                ordersMenu();
-                break;
-            case 2:
-                customersMenu();
-                break;
-            case 3:
-                productsMenu();
-                break;
-            case 4:
-                myAccountMenu();
-                break;
-            case 5:
-                logout();
-                break;
-            case 6:
-                exit();
+        try(Scanner x = new Scanner(System.in)) {
+            int result = x.nextInt();
+            switch (result) {
+                case 1:
+                    OrderManagement.ordersMenu();
+                    break;
+                case 2:
+                    CustomerManagement.customersMenu();
+                    break;
+                case 3:
+                    ProductManagement.productsMenu();
+                    break;
+                case 4:
+                    myAccountMenu();
+                    break;
+                case 5:
+                    adminMenu();
+                    break;
+                case 6:
+                    logout();
+                    break;
+                case 7:
+                    exit();
+            }
         }
     }
 
     private static void logout() {
-        logIn();
+        if(logIn() != null) homeMenu();
     }
 
     private static void exit() {
@@ -104,126 +115,59 @@ public class BusinessManagement {
         System.exit(0);
     }
 
+    private static void adminMenu() {
+        showAdminMenuInterface();
+        try(Scanner userInput = new Scanner(System.in)) {
+            switch (userInput.nextInt()) {
+                case 4:
+                    homeMenu();
+            }
+        }
+    }
+
+
     private static void myAccountMenu() {
         showMyAccountMenuInterface();
     }
 
-    private static void productsMenu() {
-        showProductsMenuInterface();
-    }
-
-
-    private static void customersMenu() {
-        showCustomersMenuInterface();
-    }
-
-    private static void ordersMenu() {
-        showOrdersMenuInterface();
-        switch(userInput.nextInt()) {
-            case 1:
-                createOrder();
-                break;
-        }
-    }
-
-    private static void createOrder() {
-        System.out.println("*".repeat(20));
-        showCustomers();
-        Customer customer = chooseCustomer();
-        showProducts();
-        Order order = new Order(customer, chooseProducts());
-        orders.add(order);
-    }
-
-    private static void showProducts() {
-        for(Product product : products) {
-            System.out.println(product + "\n");
-        }
-
-    }
-
-    private static List<Product> chooseProducts() {
-        List<Product> tempProducts = new ArrayList<>();
-        String result;
-
-        System.out.println("If you want to finish taking order press 'f'");
-        System.out.println("If you want to quit taking order press 'q'");
-        do {
-            result = userInput.nextLine();
-            if(result.equals("f")) break;
-            else if(result.equals("q")) return new ArrayList<>();
-            Product product = products.get(Integer.parseInt(result)-1);
-            tempProducts.add(product);
-        } while (true);
-
-        return tempProducts;
-    }
-
-    private static void showCustomers() {
-        for(Customer customer : customers) {
-            System.out.println(customer + "\n");
-        }
-    }
-
-    private static Customer chooseCustomer() {
-        System.out.print("Choose an customer: ");
-        long id = userInput.nextLong();
-        return customers.stream()
-                .filter(c -> c.getID() == id)
-                .findFirst().orElseThrow();
-    }
-
-    private static void showProductsMenuInterface() {
-        System.out.println("=".repeat(20));
-        System.out.println("1. Create product");
-        System.out.println("2. Delete product");
-        System.out.println("3. Show products");
-        System.out.println("4. Go back to home menu");
-    }
-
-    private static void showCustomersMenuInterface() {
-        System.out.println("=".repeat(20));
-        System.out.println("1. Show all customers");
-        System.out.println("2. Find customer");
-        System.out.println("3. Add customer");
-        System.out.println("4. Delete customer");
-        System.out.println("5. Go back to home menu");
-        System.out.println("=".repeat(20) + "\n\n");
-    }
-
-
-    private static void showOrdersMenuInterface() {
-        System.out.println("=".repeat(20));
-        System.out.println("1. Create an order");
-        System.out.println("2. Delete an order");
-        System.out.println("3. Show orders");
-        System.out.println("4. Go back to home menu");
-        System.out.println("=".repeat(20) + "\n\n");
-    }
-
     private static void showHomeMenuInterface() {
-        System.out.println("=".repeat(20));
+        System.out.println("=".repeat(30));
+        System.out.println("\t***HOME MENU***");
         System.out.println("1. Orders");
         System.out.println("2. Customers");
         System.out.println("3. Products");
         System.out.println("4. My account");
-        System.out.println("5. Logout");
-        System.out.println("=".repeat(20) + "\n\n");
+        System.out.println("5. Administrator menu");
+        System.out.println("6. Logout");
+        System.out.println("7. Exit");
+        System.out.println("=".repeat(30) + "\n\n");
     }
 
     private static void showMyAccountMenuInterface() {
-        System.out.println("=".repeat(20));
+        System.out.println("=".repeat(30));
+        System.out.println("\t***MY ACCOUNT***");
         System.out.println("1. Show information about my account");
         System.out.println("2. Change information about my account");
         System.out.println("3. Go back to home menu");
-        System.out.println("=".repeat(20) + "\n\n");
+        System.out.println("=".repeat(30) + "\n\n");
     }
 
-    private static boolean doesLoginExist(String login, String password) {
-        EmployeeLogin employeeLogin = new EmployeeLogin(login, password);
+    private static void showAdminMenuInterface() {
+        System.out.println("=".repeat(30));
+        System.out.println("\t***ADMIN MENU***");
+        System.out.println("1. ");
+        System.out.println("2. ");
+        System.out.println("3. ");
+        System.out.println("4. Go back to home menu");
+        System.out.println("=".repeat(30));
+    }
 
-        boolean result = employeeLogins.stream()
-                .anyMatch(e -> e.equals(employeeLogin));
+
+
+    private static boolean doesAccountExist(EmployeeAccount employeeAccount) {
+        boolean result =  employeeAccounts.stream()
+                .anyMatch(e -> e.equals(employeeAccount));
+
         if(result) {
             System.out.println("\nHello! You successfully logged in!\n");
         } else {
