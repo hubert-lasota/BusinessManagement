@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.Business.BusinessManagement.userInput;
 
 public class OrderManagement {
     private static final List<Order> orders = new ArrayList<>();
@@ -20,21 +21,21 @@ public class OrderManagement {
 
     public static void ordersMenu() {
         showOrdersMenuInterface();
-        try(Scanner userInput = new Scanner(System.in)) {
-            switch (userInput.nextInt()) {
-                case 1:
-                    createOrder();
-                    break;
-                case 2:
-                    // TODO deleteOrder
-                    break;
-                case 3:
-                    // TODO showOrders
-                    break;
-                case 4:
-                    BusinessManagement.homeMenu();
+        int inputResult = userInput.nextInt();
+        userInput.nextLine();
+        switch (inputResult) {
+            case 1:
+                createOrder();
+                break;
+            case 2:
+                // TODO deleteOrder
+                break;
+            case 3:
+                // TODO showOrders
+                break;
+            case 4:
+                BusinessManagement.homeMenu();
 
-            }
         }
     }
 
@@ -63,15 +64,14 @@ public class OrderManagement {
 
         System.out.println("If you want to finish taking order press 'f'");
         System.out.println("If you want to quit taking order press 'q'");
-        try(Scanner userInput = new Scanner(System.in)) {
-            do {
-                result = userInput.nextLine();
-                if (result.equals("f")) break;
-                else if (result.equals("q")) return new ArrayList<>();
-                Product product = ProductManagement.getProducts().get(Integer.parseInt(result) - 1);
-                tempProducts.add(product);
-            } while (true);
-        }
+        do {
+            result = userInput.nextLine();
+            if (result.equals("f")) break;
+            else if (result.equals("q")) return new ArrayList<>();
+            Product product = ProductManagement.getProducts().get(Integer.parseInt(result) - 1);
+            tempProducts.add(product);
+        } while (true);
+
         return tempProducts;
     }
 

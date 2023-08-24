@@ -14,6 +14,8 @@ public class BusinessManagement {
     private static final List<Employee> employees = new ArrayList<>();
     private static final List<EmployeeAccount> employeeAccounts = new ArrayList<>();
 
+    public static final Scanner userInput = new Scanner(System.in);
+
 
     private BusinessManagement() {}
 
@@ -56,19 +58,19 @@ public class BusinessManagement {
     public static EmployeeAccount logIn() {
         boolean result;
         EmployeeAccount employeeAccount;
-        Scanner userInput = new Scanner(System.in);
-            for (int i = 0; i < 3; i++) {
-                System.out.print("LOGIN: ");
-                String login = userInput.nextLine();
 
-                System.out.print("PASSWORD: ");
-                String password = userInput.nextLine();
-                employeeAccount = new EmployeeAccount(login, password);
-                result = doesAccountExist(employeeAccount);
-                if (result) {
-                    return employeeAccount;
-                }
+        for (int i = 0; i < 3; i++) {
+            System.out.print("LOGIN: ");
+            String login = userInput.nextLine();
+
+            System.out.print("PASSWORD: ");
+            String password = userInput.nextLine();
+            employeeAccount = new EmployeeAccount(login, password);
+            result = doesAccountExist(employeeAccount);
+            if (result) {
+                return employeeAccount;
             }
+        }
 
         return null;
     }
@@ -79,30 +81,30 @@ public class BusinessManagement {
 
     public static void homeMenu() {
         showHomeMenuInterface();
-        try(Scanner x = new Scanner(System.in)) {
-            int result = x.nextInt();
-            switch (result) {
-                case 1:
-                    OrderManagement.ordersMenu();
-                    break;
-                case 2:
-                    CustomerManagement.customersMenu();
-                    break;
-                case 3:
-                    ProductManagement.productsMenu();
-                    break;
-                case 4:
-                    myAccountMenu();
-                    break;
-                case 5:
-                    adminMenu();
-                    break;
-                case 6:
-                    logout();
-                    break;
-                case 7:
-                    exit();
-            }
+
+        int result = userInput.nextInt();
+        userInput.nextLine();
+        switch (result) {
+            case 1:
+                OrderManagement.ordersMenu();
+                break;
+            case 2:
+                CustomerManagement.customersMenu();
+                break;
+            case 3:
+                ProductManagement.productsMenu();
+                break;
+            case 4:
+                myAccountMenu();
+                break;
+            case 5:
+                adminMenu();
+                break;
+            case 6:
+                logout();
+                break;
+            case 7:
+                exit();
         }
     }
 
