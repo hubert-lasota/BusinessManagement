@@ -2,17 +2,17 @@ package org.Business.employee;
 
 import java.util.Objects;
 
-public class EmployeeLogin  implements Comparable<EmployeeLogin> {
+public class EmployeeAccount implements Comparable<EmployeeAccount> {
     private String login;
     private String password;
     private Long employeeID;
 
-    public EmployeeLogin(String login, String password) {
+    public EmployeeAccount(String login, String password) {
         this.login = login;
         this.password = password;
     }
 
-    public EmployeeLogin(String login, String password, Long employeeID) {
+    public EmployeeAccount(String login, String password, Long employeeID) {
         this.login = login;
         this.password = password;
         this.employeeID = employeeID;
@@ -46,7 +46,7 @@ public class EmployeeLogin  implements Comparable<EmployeeLogin> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EmployeeLogin that = (EmployeeLogin) o;
+        EmployeeAccount that = (EmployeeAccount) o;
         return login.equals(that.login) && password.equals(that.password);
     }
 
@@ -57,7 +57,7 @@ public class EmployeeLogin  implements Comparable<EmployeeLogin> {
 
 
     @Override
-    public int compareTo(EmployeeLogin o) {
+    public int compareTo(EmployeeAccount o) {
         return login.compareTo(o.login);
     }
 }
