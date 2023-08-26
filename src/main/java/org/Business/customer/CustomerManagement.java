@@ -4,7 +4,6 @@ import org.Business.BusinessManagement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Function;
 
 import static org.Business.BusinessManagement.userInput;
@@ -49,12 +48,39 @@ public class CustomerManagement {
                 addCustomer();
                 break;
             case 4:
-                // TODO deleteCustomer
+                deleteCustomer();
                 break;
             case 5:
                 BusinessManagement.homeMenu();
 
 
+        }
+    }
+
+    private static void deleteCustomer() {
+        System.out.println("Type customer's ID which you want to delete: ");
+        long id = userInput.nextLong();
+        userInput.nextLine(); // cleans the buffer
+
+        deleteCustomerById(id);
+
+    }
+
+    private static void deleteCustomerById(long id) {
+        System.out.println("Are you sure to delete this customer? Type yes/no.");
+        customers.stream()
+                .filter(c -> c.getID() == id)
+                .forEach(System.out::println);
+
+        if (userInput.nextLine().equals("yes")) {
+                if (customers.removeIf(c -> c.getID() == id)) {
+                    System.out.println("Customer successfully removed from database!");
+                } else {
+                    System.out.println("ID is incorrect.");
+                }
+                customersMenu();
+        } else {
+            customersMenu();
         }
     }
 
@@ -170,10 +196,10 @@ public class CustomerManagement {
         userInput.nextLine();
         switch (inputResult) {
             case 1:
-                // TODO editCustomer()
+                editCustomer(id);
                 break;
             case 2:
-                // TODO deleteCustomer()
+                deleteCustomerById(id);
                 break;
             case 3:
                 // TODO createOrder for this customer
@@ -183,6 +209,42 @@ public class CustomerManagement {
                 break;
 
         }
+    }
+
+    private static void editCustomer(long id) {
+        System.out.println("Do you want to edit: ");
+        System.out.println("1.Name\t2.Street with number\t3.Postal code\t4.City\t5.Country");
+        int inputResult = userInput.nextInt();
+        userInput.nextLine(); // cleans the buffer
+        switch (inputResult) {
+            case 1:
+                System.out.println("Type new customer's name!");
+                customers.get(getIndexOfCustomer(id)).setName(userInput.nextLine());
+                break;
+            case 2:
+                System.out.println("Type new customer's street with number!");
+                customers.get(getIndexOfCustomer(id)).address.setStreetWithNumber(userInput.nextLine());
+                break;
+            case 3:
+                System.out.println("Type new customer's postal code!");
+                customers.get(getIndexOfCustomer(id)).address.setPostalCode(userInput.nextLine());
+                break;
+            case 4:
+                System.out.println("Type new customer's city!");
+                customers.get(getIndexOfCustomer(id)).address.setCity(userInput.nextLine());
+                break;
+            case 5:
+                System.out.println("Type new customer's country!");
+                customers.get(getIndexOfCustomer(id)).address.setCountry(userInput.nextLine());
+        }
+        customersMenu();
+    }
+
+    private static int getIndexOfCustomer(long id) {
+        Customer customer = customers.stream()
+                .filter(c -> c.getID() == id)
+                .findFirst().get();
+        return customers.indexOf(customer);
     }
 
     private static void showCustomersMenuInterface() {
@@ -199,7 +261,7 @@ public class CustomerManagement {
     private static void showOpenEditorOnCustomerInterface() {
         System.out.println("=".repeat(30));
         System.out.println("1. Edit customer's data");
-        System.out.println("2. Delete customer");
+        System.out.println("2. Delete this customer");
         System.out.println("3. Create order for this customer");
         System.out.println("4. Go back to customer's menu");
         System.out.println("=".repeat(30));
