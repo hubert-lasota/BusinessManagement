@@ -1,6 +1,7 @@
 package org.Business.customer;
 
 import org.Business.BusinessManagement;
+import org.Business.order.OrderManagement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,25 +63,22 @@ public class CustomerManagement {
         long id = userInput.nextLong();
         userInput.nextLine(); // cleans the buffer
 
-        deleteCustomerById(id);
-
+        deleteThisCustomer(id);
+        customersMenu();
     }
 
-    private static void deleteCustomerById(long id) {
+    private static void deleteThisCustomer(long id) {
         System.out.println("Are you sure to delete this customer? Type yes/no.");
         customers.stream()
                 .filter(c -> c.getID() == id)
                 .forEach(System.out::println);
 
         if (userInput.nextLine().equals("yes")) {
-                if (customers.removeIf(c -> c.getID() == id)) {
-                    System.out.println("Customer successfully removed from database!");
-                } else {
-                    System.out.println("ID is incorrect.");
-                }
-                customersMenu();
-        } else {
-            customersMenu();
+            if (customers.removeIf(c -> c.getID() == id)) {
+                System.out.println("Customer successfully removed from database!");
+            } else {
+                System.out.println("ID is incorrect.");
+            }
         }
     }
 
@@ -103,11 +101,10 @@ public class CustomerManagement {
         if(!customers.contains(customer)) {
             System.out.println("\nCUSTOMER ADDED SUCCESSFULLY!\n");
             customers.add(customer);
-            customersMenu();
         } else {
             System.out.println("\nCUSTOMER EXISTS IN DATABASE!\n");
-            customersMenu();
         }
+        customersMenu();
     }
 
     private static void findCustomers() {
@@ -199,10 +196,11 @@ public class CustomerManagement {
                 editCustomer(id);
                 break;
             case 2:
-                deleteCustomerById(id);
+                deleteThisCustomer(id);
                 break;
             case 3:
-                // TODO createOrder for this customer
+                OrderManagement.createOrderForThisCustomer(customers.get(getIndexOfCustomer(id)));
+                customersMenu();
                 break;
             case 4:
                 customersMenu();
