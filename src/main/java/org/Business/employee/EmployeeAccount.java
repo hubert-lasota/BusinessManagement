@@ -60,4 +60,10 @@ public class EmployeeAccount implements Comparable<EmployeeAccount> {
     public int compareTo(EmployeeAccount o) {
         return login.compareTo(o.login);
     }
+
+    @Override
+    public String toString() {
+        return "login: " + login + "\n"
+                + "password: " + password;
+    }
 }
