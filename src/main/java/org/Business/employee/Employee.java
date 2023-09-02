@@ -1,5 +1,6 @@
 package org.Business.employee;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Employee {
@@ -10,7 +11,7 @@ public class Employee {
     private final String lastName;
     private final LocalDate dateOfBirth;
     private EmployeeProfession profession;
-    private double salary;
+    private BigDecimal salary;
     private Address address;
 
     public static class Builder {
@@ -19,7 +20,7 @@ public class Employee {
         private final LocalDate dateOfBirth;
 
         private EmployeeProfession profession = EmployeeProfession.NONE;
-        private double salary = 0;
+        private BigDecimal salary = BigDecimal.ZERO;
         private Address address = Address.emptyAddress();
 
         public Builder(String firstName, String lastName, LocalDate dateOfBirth) {
@@ -33,7 +34,7 @@ public class Employee {
             return this;
         }
 
-        public Builder salary(double salary) {
+        public Builder salary(BigDecimal salary) {
             this.salary = salary;
             return this;
         }
@@ -61,7 +62,7 @@ public class Employee {
         this.address = builder.address;
     }
 
-    private static class Address {
+    public static class Address {
         private String streetWithNumber;
         private String postalCode;
         private String city;
@@ -78,6 +79,39 @@ public class Employee {
             return new Address("none", "none", "none", "none");
         }
 
+
+        public String getStreetWithNumber() {
+            return streetWithNumber;
+        }
+
+        public void setStreetWithNumber(String streetWithNumber) {
+            this.streetWithNumber = streetWithNumber;
+        }
+
+        public String getPostalCode() {
+            return postalCode;
+        }
+
+        public void setPostalCode(String postalCode) {
+            this.postalCode = postalCode;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
         @Override
         public String toString() {
             return streetWithNumber + "\n"
@@ -87,11 +121,41 @@ public class Employee {
 
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setProfession(EmployeeProfession profession) {
+        this.profession = profession;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
     public long getID() {
         return ID;
     }
 
+    public Address getAddress() {
+        return address;
+    }
 
+    public EmployeeProfession getProfession() {
+        return profession;
+    }
 
     @Override
     public String toString() {
