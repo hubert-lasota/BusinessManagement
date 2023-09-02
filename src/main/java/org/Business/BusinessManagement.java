@@ -3,16 +3,20 @@ package org.Business;
 import org.Business.customer.CustomerManagement;
 import org.Business.employee.Employee;
 import org.Business.employee.EmployeeAccount;
+import org.Business.employee.EmployeeProfession;
 import org.Business.order.OrderManagement;
 import org.Business.product.ProductManagement;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class BusinessManagement {
     private static final List<Employee> employees = new ArrayList<>();
     private static final List<EmployeeAccount> employeeAccounts = new ArrayList<>();
+
+    private static long thisEmployeeID;
+    private static boolean adminFlag;
 
     public static final Scanner userInput = new Scanner(System.in);
 
@@ -55,24 +59,44 @@ public class BusinessManagement {
 
 
 
-    public static EmployeeAccount logIn() {
-        boolean result;
+    public static void logIn() {
         EmployeeAccount employeeAccount;
 
-        for (int i = 0; i < 3; i++) {
+        while(true) {
             System.out.print("LOGIN: ");
             String login = userInput.nextLine();
 
             System.out.print("PASSWORD: ");
             String password = userInput.nextLine();
             employeeAccount = new EmployeeAccount(login, password);
-            result = doesAccountExist(employeeAccount);
-            if (result) {
-                return employeeAccount;
+            if(doesAccountExist(employeeAccount)) {
+                setThisEmployeeID(employeeAccount);
+                setAdminFlagIfPresent();
+                break;
             }
         }
+        homeMenu();
+    }
 
-        return null;
+
+    private static void setThisEmployeeID(EmployeeAccount employeeAccount) {
+        OptionalLong employeeID = employeeAccounts.stream()
+                .filter(e -> e.equals(employeeAccount))
+                .mapToLong(EmployeeAccount::getEmployeeID)
+                .findFirst();
+        if(employeeID.isPresent())
+            thisEmployeeID = employeeID.getAsLong();
+    }
+
+    private static void setAdminFlagIfPresent() {
+        boolean isEmployeeAdmin = employees.stream()
+                .filter(e -> e.getID() == thisEmployeeID)
+                .anyMatch(e -> e.getProfession().equals(EmployeeProfession.ADMINISTRATOR));
+
+        if(isEmployeeAdmin) {
+            adminFlag = true;
+        }
+
     }
 
     public static int numberOfEmployees() {
@@ -101,16 +125,14 @@ public class BusinessManagement {
                 adminMenu();
                 break;
             case 6:
-                logout();
+                logIn();
                 break;
             case 7:
                 exit();
         }
     }
 
-    private static void logout() {
-        if(logIn() != null) homeMenu();
-    }
+
 
     private static void exit() {
         System.out.println("\nThank you for using Business Management! :-)");
@@ -118,18 +140,146 @@ public class BusinessManagement {
     }
 
     private static void adminMenu() {
+        if(!isAdmin()) {
+            System.out.println("You don't have access to admin menu!");
+            homeMenu();
+        }
         showAdminMenuInterface();
-        try(Scanner userInput = new Scanner(System.in)) {
-            switch (userInput.nextInt()) {
-                case 4:
-                    homeMenu();
-            }
+        int resultInput = userInput.nextInt();
+        userInput.nextLine();
+        switch (resultInput) {
+            case 4:
+                homeMenu();
         }
     }
-
+    
+    private static boolean isAdmin() {
+        return adminFlag;
+    }
 
     private static void myAccountMenu() {
         showMyAccountMenuInterface();
+
+        int resultInput = userInput.nextInt();
+        userInput.nextLine();
+        switch (resultInput) {
+            case 1:
+                myAccountInformation();
+                break;
+            case 2:
+                editEmployeeInformation();
+                break;
+            case 3:
+                homeMenu();
+        }
+
+
+    }
+
+    private static void editEmployeeInformation() {
+        System.out.println("Do you want change: ");
+        System.out.println("1. Login\t2. Password");
+        System.out.println("3. Street with number\t4. Postal code\t5. City\t6. Country");
+        System.out.println("7. Profession\t8. Salary");
+
+
+        int inputResult = userInput.nextInt();
+        userInput.nextLine();
+        switch (inputResult) {
+            case 1:
+                String login;
+                do {
+                    System.out.print("Type new login: ");
+                    login = userInput.nextLine();
+                } while (isLoginAvailable(login));
+                String finalLogin = login;
+                editEmployeeAccountInformationByData(e -> e.setLogin(finalLogin));
+                break;
+            case 2:
+                System.out.print("Type new password: ");
+                editEmployeeAccountInformationByData(e -> e.setPassword(userInput.nextLine()));
+                break;
+            case 3:
+                System.out.print("Type new street with number: ");
+                editEmployeeInformationByData(e -> e.getAddress().setStreetWithNumber(userInput.nextLine()));
+                break;
+            case 4:
+                System.out.print("Type new postal code: ");
+                editEmployeeInformationByData(e -> e.getAddress().setPostalCode(userInput.nextLine()));
+                break;
+            case 5:
+                System.out.print("Type new city: ");
+                editEmployeeInformationByData(e -> e.getAddress().setCity(userInput.nextLine()));
+                break;
+            case 6:
+                System.out.println("Type new country: ");
+                editEmployeeInformationByData(e -> e.getAddress().setCountry(userInput.nextLine()));
+                break;
+            case 7:
+                System.out.println("Choose new profession: ");
+                EmployeeProfession newEmployeeProfession = chooseNewProfession();
+                editEmployeeInformationByData(e -> e.setProfession(newEmployeeProfession));
+                break;
+            case 8:
+                System.out.println("Type new salary: ");
+                editEmployeeInformationByData(e -> e.setSalary(new BigDecimal(userInput.nextLine())));
+
+        }
+    }
+
+    private static EmployeeProfession chooseNewProfession() {
+        EmployeeProfession[] employeeProfessions = EmployeeProfession.values();
+        for(int i = 0; i < employeeProfessions.length; i++) {
+            System.out.println(i + ". " + employeeProfessions[i]);
+        }
+        int inputResult = userInput.nextInt();
+        userInput.nextLine();
+
+        return employeeProfessions[inputResult];
+
+    }
+
+    private static void editEmployeeInformationByData(Consumer<Employee> setterExtractor) {
+        Optional<Employee> employee = employees.stream()
+                .filter(e -> e.getID() == thisEmployeeID)
+                .findFirst();
+        employee.ifPresent(setterExtractor);
+        myAccountMenu();
+    }
+
+    private static void editEmployeeAccountInformationByData(Consumer<EmployeeAccount> setterExtractor) {
+        Optional<EmployeeAccount> employeeAccount = employeeAccounts.stream()
+                .filter(e -> e.getEmployeeID() == thisEmployeeID)
+                .findFirst();
+        employeeAccount.ifPresent(setterExtractor);
+        myAccountMenu();
+    }
+
+    private static boolean isLoginAvailable(String login) {
+        return employeeAccounts.stream()
+                .noneMatch(e -> e.getLogin().equals(login));
+    }
+
+    private static void myAccountInformation() {
+        employeeAccounts.stream()
+                .filter(e -> e.getEmployeeID() == thisEmployeeID)
+                .forEach(e -> {
+                    System.out.println("Employee Account Information");
+                    System.out.println("*".repeat(30));
+                    System.out.println(e);
+                    System.out.println("*".repeat(30).concat("\n"));
+                });
+
+        employees.stream()
+                .filter(e -> e.getID() == thisEmployeeID)
+                .forEach(e -> {
+                    System.out.println("Employee Information");
+                    System.out.println("*".repeat(30));
+                    System.out.println(e);
+                    System.out.println("*".repeat(30));
+                });
+
+        myAccountMenu();
     }
 
     private static void showHomeMenuInterface() {
