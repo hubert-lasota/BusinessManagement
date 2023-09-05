@@ -71,6 +71,14 @@ public class OrderManagement {
         ordersMenu();
     }
 
+    private static void openEditorOnOrder() {
+        System.out.println("=".repeat(30));
+        System.out.println("If you want to open editor on order:");
+        System.out.println("Type order's ID");
+        System.out.println("If you want to quit. Type 'q'");
+        System.out.println("=".repeat(30).concat("\n"));
+    }
+
     private static void deleteThisOrder(long id) {
         System.out.println("Are you sure you want to delete this order? Type yes/no.");
         orders.stream()
@@ -119,8 +127,10 @@ public class OrderManagement {
         Product product;
         int quantity;
 
+        System.out.println("=".repeat(30));
         System.out.println("If you want to finish taking order press 'f'");
         System.out.println("If you want to cancel the order press 'q'");
+        System.out.println("=".repeat(30));
         do {
             result = userInput.nextLine();
 

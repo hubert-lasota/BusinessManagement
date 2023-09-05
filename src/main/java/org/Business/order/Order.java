@@ -3,6 +3,7 @@ package org.Business.order;
 import org.Business.customer.Customer;
 import org.Business.product.Product;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class Order {
@@ -11,58 +12,64 @@ public class Order {
 
     private final Customer customer;
     private final Map<Product, Integer> products;
-    private final double totalPrice;
+    private final BigDecimal totalPrice;
     private String orderComments;
+    private OrderStatus orderStatus;
 
     public Order(Customer customer, Map<Product, Integer> products) {
         this.customer = customer;
         this.products = products;
         this.totalPrice = countTotalPrice(products);
+        this.orderStatus = OrderStatus.NEW;
+        this.orderComments = "no order comments";
         ID = incrementID++;
     }
 
-    public String getOrderComments() {
-        return orderComments;
+    public Order(Customer customer, Map<Product, Integer> products, String orderComments) {
+        this.customer = customer;
+        this.products = products;
+        this.totalPrice = countTotalPrice(products);
+        this.orderStatus = OrderStatus.NEW;
+        this.orderComments = orderComments;
+        ID = incrementID++;
     }
+
+
 
     public void setOrderComments(String orderComments) {
         this.orderComments = orderComments;
     }
 
-    public void addProduct(Product product) {
-        products.put(product, products.get(product) + 1);
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
-    public void removeProduct(Product product) {
-        products.remove(product);
-    }
-
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
 
     public long getID() {
         return ID;
     }
 
 
-    public static double countTotalPrice(Map<Product, Integer> order) {
-        double result = 0.0;
+    public static BigDecimal countTotalPrice(Map<Product, Integer> order) {
+        BigDecimal result = BigDecimal.ZERO;
         for (Map.Entry<Product, Integer> product: order.entrySet()) {
-            result += product.getValue() * product.getKey().getPrice();
+            result = result.add((product.getKey().getPrice().multiply(BigDecimal.valueOf(product.getValue()))));
         }
         return result;
     }
 
     @Override
     public String toString() {
-        String result = "Order: " + ID + ".\n" + customer + "\n";
+        String result = "Order: " + ID + ".\n" + customer + "\n"
+                + orderComments + "\n"
+                + "status: " + orderStatus.toString().toLowerCase() + "\n";
+
         StringBuilder tempStrBuilder = new StringBuilder();
         for(Map.Entry<Product, Integer> product : products.entrySet()) {
             tempStrBuilder.append("Quantity: ").append(product.getValue()).append("\n").append(product.getKey()).append("\n");
         }
-        return result += tempStrBuilder.toString();
+        result += tempStrBuilder;
+        return result;
     }
 
 
