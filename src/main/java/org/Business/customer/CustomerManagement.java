@@ -54,7 +54,6 @@ public class CustomerManagement {
             case 5:
                 BusinessManagement.homeMenu();
 
-
         }
     }
 
@@ -158,23 +157,30 @@ public class CustomerManagement {
                 .forEach(c -> System.out.println(c + "\n"));
         System.out.println("*".repeat(30));
         System.out.println("If you want to edit or create order press customer's ID!");
-        System.out.println("Or if you want to go back to customer's menu press zero!");
+        System.out.println("Or if you want to go back to customer's menu press 'q'!");
 
-        long id = userInput.nextLong();
-        userInput.nextLine();
-        openEditorOnCustomer(id);
+        String inputResult = userInput.nextLine();
+        if(inputResult.equals("q")) {
+            customersMenu();
+        } else {
+            openEditorOnCustomer(Long.parseLong(inputResult));
+        }
 
     }
 
     private static void showAllCustomers() {
         showCustomers();
+        System.out.println("\n".concat("=".repeat(30)));
         System.out.println("If you want to edit or create order press customer's ID!");
-        System.out.println("Or if you want to go back to customer's menu press zero!");
+        System.out.println("Or if you want to go back to customer's menu press 'q'!");
+        System.out.println("=".repeat(30).concat("\n"));
 
-        long id = userInput.nextLong();
-        userInput.nextLine();
-        openEditorOnCustomer(id);
-
+        String inputResult = userInput.nextLine();
+        if(inputResult.equals("q")) {
+            customersMenu();
+        } else {
+            openEditorOnCustomer(Long.parseLong(inputResult));
+        }
     }
 
     private static void openEditorOnCustomer(long id) {
