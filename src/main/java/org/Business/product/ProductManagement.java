@@ -37,9 +37,11 @@ public class ProductManagement {
     }
 
     public static void openEditorOnProduct() {
+        System.out.println("=".repeat(30));
         System.out.println("If you want to open editor on product:");
         System.out.println("Type product's ID");
         System.out.println("If you want to quit. Type 'q'");
+        System.out.println("=".repeat(30).concat("\n"));
 
         String inputResult = userInput.nextLine();
         if(inputResult.equals("q")) {

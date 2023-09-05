@@ -9,11 +9,12 @@ public class Product {
 
     private String name;
     private BigDecimal price;
-    private String description = "no description";
+    private String description;
 
     public Product(String name, BigDecimal price) {
         this.name = name;
         this.price = price;
+        this.description = "no description";
         ID = incrementID++;
     }
 
