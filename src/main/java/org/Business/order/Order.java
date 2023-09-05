@@ -21,7 +21,7 @@ public class Order {
         this.products = products;
         this.totalPrice = countTotalPrice(products);
         this.orderStatus = OrderStatus.NEW;
-        this.orderComments = "no order comments";
+        this.orderComments = "NO ORDER COMMENTS";
         ID = incrementID++;
     }
 
@@ -60,9 +60,10 @@ public class Order {
 
     @Override
     public String toString() {
-        String result = "Order: " + ID + ".\n" + customer + "\n"
-                + orderComments + "\n"
-                + "status: " + orderStatus.toString().toLowerCase() + "\n";
+        String result = "Order: [" + ID + "]\n" + customer + "\n\n"
+                + orderComments + "\n\n"
+                + "Status: " + orderStatus.toString() + "\n\n"
+                + "\t***CART***\n";
 
         StringBuilder tempStrBuilder = new StringBuilder();
         for(Map.Entry<Product, Integer> product : products.entrySet()) {

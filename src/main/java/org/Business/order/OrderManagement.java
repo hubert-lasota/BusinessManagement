@@ -36,6 +36,7 @@ public class OrderManagement {
                 break;
             case 3:
                 showOrders();
+                openEditorOnOrder();
                 break;
             case 4:
                 BusinessManagement.homeMenu();
@@ -58,7 +59,6 @@ public class OrderManagement {
                 System.out.println("-".repeat(30).concat("\n"));
             }
         }
-        ordersMenu();
     }
 
     public static void deleteOrder() {
@@ -72,9 +72,45 @@ public class OrderManagement {
     }
 
     private static void openEditorOnOrder() {
+        showOpenEditorOnOrderInterface();
+        String inputResult = userInput.nextLine();
+        if(inputResult.equals("q")) {
+            ordersMenu();
+        } else {
+            System.out.println("1. Change order's comments");
+            System.out.println("2. Change order's status");
+            int result = userInput.nextInt();
+            userInput.nextLine();
+            switch (result) {
+                case 1:
+                    System.out.print("Type new order's comments: ");
+                    String orderComments = userInput.nextLine();
+                    orders.get(getIndexOfProduct(Long.parseLong(inputResult))).setOrderComments(orderComments);
+                    break;
+                case 2:
+                    System.out.println("Choose new order status: ");
+                    OrderStatus orderStatus = chooseNewOrderStatus();
+                    orders.get(getIndexOfProduct(Long.parseLong(inputResult))).setOrderStatus(orderStatus);
+            }
+            ordersMenu();
+        }
+    }
+
+    private static OrderStatus chooseNewOrderStatus() {
+        OrderStatus[] orderStatuses = OrderStatus.values();
+
+        for(int i = 0; i < orderStatuses.length; i++) {
+            System.out.println(i + ". " + orderStatuses[i]);
+        }
+
+        int inputResult = userInput.nextInt();
+        userInput.nextLine();
+        return orderStatuses[inputResult];
+    }
+
+    private static void showOpenEditorOnOrderInterface() {
         System.out.println("=".repeat(30));
-        System.out.println("If you want to open editor on order:");
-        System.out.println("Type order's ID");
+        System.out.println("If you want to open editor on order. Type order's ID");
         System.out.println("If you want to quit. Type 'q'");
         System.out.println("=".repeat(30).concat("\n"));
     }
