@@ -1,4 +1,4 @@
-package org.Business.order;
+package org.hubert_lasota.BusinessManagement.order;
 
 public enum OrderStatus {
     NEW,

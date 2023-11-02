@@ -1,10 +1,10 @@
-package org.Business.product;
+package org.hubert_lasota.BusinessManagement.product;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Product {
-    private final long ID;
+    private final Long ID;
     private static long incrementID = 1;
 
     private String name;
@@ -25,20 +25,28 @@ public class Product {
         ID = incrementID++;
     }
 
-    public long getID() {
+    public Long getID() {
         return ID;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
@@ -50,12 +58,12 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return ID == product.ID && Objects.equals(name, product.name);
+        return Objects.equals(name, product.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID, name);
+        return Objects.hash(name);
     }
 
     @Override

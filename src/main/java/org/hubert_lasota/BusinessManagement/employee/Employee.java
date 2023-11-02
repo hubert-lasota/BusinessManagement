@@ -1,15 +1,15 @@
-package org.Business.employee;
+package org.hubert_lasota.BusinessManagement.employee;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Employee {
-    private final long ID;
+    private final Long ID;
     private static long incrementID = 1;
 
-    private final String firstName;
-    private final String lastName;
-    private final LocalDate dateOfBirth;
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
     private EmployeeProfession profession;
     private BigDecimal salary;
     private Address address;
@@ -80,32 +80,16 @@ public class Employee {
         }
 
 
-        public String getStreetWithNumber() {
-            return streetWithNumber;
-        }
-
         public void setStreetWithNumber(String streetWithNumber) {
             this.streetWithNumber = streetWithNumber;
-        }
-
-        public String getPostalCode() {
-            return postalCode;
         }
 
         public void setPostalCode(String postalCode) {
             this.postalCode = postalCode;
         }
 
-        public String getCity() {
-            return city;
-        }
-
         public void setCity(String city) {
             this.city = city;
-        }
-
-        public String getCountry() {
-            return country;
         }
 
         public void setCountry(String country) {
@@ -121,16 +105,36 @@ public class Employee {
 
     }
 
+    public Long getID() {
+        return ID;
+    }
+
     public String getFirstName() {
         return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public EmployeeProfession getProfession() {
+        return profession;
     }
 
     public void setProfession(EmployeeProfession profession) {
@@ -145,16 +149,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public long getID() {
-        return ID;
-    }
-
     public Address getAddress() {
         return address;
     }
 
-    public EmployeeProfession getProfession() {
-        return profession;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override

@@ -1,29 +1,19 @@
-package org.Business.order;
+package org.hubert_lasota.BusinessManagement.order;
 
-import org.Business.customer.Customer;
-import org.Business.product.Product;
+import org.hubert_lasota.BusinessManagement.customer.Customer;
+import org.hubert_lasota.BusinessManagement.product.Product;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
 public class Order {
-    private final long ID;
+    private final Long ID;
     private static long incrementID = 1;
-
     private final Customer customer;
-    private final Map<Product, Integer> products;
-    private final BigDecimal totalPrice;
+    private Map<Product, Integer> products;
+    private BigDecimal totalPrice;
     private String orderComments;
     private OrderStatus orderStatus;
-
-    public Order(Customer customer, Map<Product, Integer> products) {
-        this.customer = customer;
-        this.products = products;
-        this.totalPrice = countTotalPrice(products);
-        this.orderStatus = OrderStatus.NEW;
-        this.orderComments = "NO ORDER COMMENTS";
-        ID = incrementID++;
-    }
 
     public Order(Customer customer, Map<Product, Integer> products, String orderComments) {
         this.customer = customer;
@@ -34,7 +24,9 @@ public class Order {
         ID = incrementID++;
     }
 
-
+    public Order(Customer customer, Map<Product, Integer> products) {
+        this(customer, products, "NO ORDER COMMENTS");
+    }
 
     public void setOrderComments(String orderComments) {
         this.orderComments = orderComments;
@@ -45,14 +37,41 @@ public class Order {
     }
 
 
-    public long getID() {
+    public Long getID() {
         return ID;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Map<Product, Integer> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Map<Product, Integer> products) {
+        this.products = products;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getOrderComments() {
+        return orderComments;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
 
     public static BigDecimal countTotalPrice(Map<Product, Integer> order) {
         BigDecimal result = BigDecimal.ZERO;
-        for (Map.Entry<Product, Integer> product: order.entrySet()) {
+        for (Map.Entry<Product, Integer> product : order.entrySet()) {
             result = result.add((product.getKey().getPrice().multiply(BigDecimal.valueOf(product.getValue()))));
         }
         return result;
