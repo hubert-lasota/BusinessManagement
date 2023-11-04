@@ -1,6 +1,7 @@
-package org.hubert_lasota.BusinessManagement.order;
+package org.hubert_lasota.BusinessManagement.product;
 
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
+import org.hubert_lasota.BusinessManagement.order.Order;
 
 import java.util.*;
 import java.util.function.Function;

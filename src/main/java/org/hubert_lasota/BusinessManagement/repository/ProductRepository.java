@@ -1,13 +1,14 @@
-package org.hubert_lasota.BusinessManagement.product;
+package org.hubert_lasota.BusinessManagement.repository;
 
 
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
+import org.hubert_lasota.BusinessManagement.product.Product;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class ProductRepository {
+public class ProductRepository implements Repository<Product> {
     private static ProductRepository productRepository;
     private Map<Long, Product> products;
 
@@ -22,10 +23,12 @@ public class ProductRepository {
         return productRepository;
     }
 
+    @Override
     public Product save(Product product) {
         return products.putIfAbsent(product.getID(), product);
     }
 
+    @Override
     public Optional<Product> findById(Long id) {
         return Optional.ofNullable(products.get(id));
     }
@@ -37,11 +40,13 @@ public class ProductRepository {
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
     }
 
+    @Override
     public Optional<List<Product>> findAll() {
         List<Product> tempList = List.copyOf(products.values());
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
     }
 
+    @Override
     public Product update(Long id, Product product) {
         Product tempProduct = findById(id).orElseThrow(NoSuchIdException::new);
         return update(tempProduct, product);
@@ -54,8 +59,14 @@ public class ProductRepository {
         return productToUpdate;
     }
 
+    @Override
     public void delete(Long id) {
         Product product = findById(id).orElseThrow(NoSuchIdException::new);
         products.remove(product.getID(), product);
+    }
+
+    @Override
+    public Long count() {
+        return (long) products.size();
     }
 }

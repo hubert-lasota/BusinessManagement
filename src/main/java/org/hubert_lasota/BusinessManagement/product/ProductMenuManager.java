@@ -4,6 +4,7 @@ package org.hubert_lasota.BusinessManagement.product;
 import org.hubert_lasota.BusinessManagement.exception.NoProductsInDatabaseException;
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
 import org.hubert_lasota.BusinessManagement.exception.WrongInputException;
+import org.hubert_lasota.BusinessManagement.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.List;

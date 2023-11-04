@@ -1,13 +1,14 @@
-package org.hubert_lasota.BusinessManagement.customer;
+package org.hubert_lasota.BusinessManagement.repository;
 
 
+import org.hubert_lasota.BusinessManagement.customer.Customer;
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CustomerRepository {
+public class CustomerRepository implements Repository<Customer> {
     private static CustomerRepository customerRepository;
     private Map<Long, Customer> customers;
 
@@ -22,10 +23,12 @@ public class CustomerRepository {
         return customerRepository;
     }
 
+    @Override
     public Customer save(Customer customer) {
         return customers.putIfAbsent(customer.getID(), customer);
     }
 
+    @Override
     public Optional<Customer> findById(Long id) {
         return Optional.ofNullable(customers.get(id));
     }
@@ -45,11 +48,13 @@ public class CustomerRepository {
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
     }
 
+    @Override
     public Optional<List<Customer>> findAll() {
         List<Customer> tempList = List.copyOf(customers.values());
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList) ;
     }
 
+    @Override
     public Customer update(Long id, Customer customer) {
         Customer tempCustomer = findById(id).orElseThrow(NoSuchIdException::new);
         return update(tempCustomer, customer);
@@ -61,8 +66,14 @@ public class CustomerRepository {
         return customerToUpdate;
     }
 
+    @Override
     public void delete(Long id) {
         Customer customer = findById(id).orElseThrow(NoSuchIdException::new);
         customers.remove(customer.getID(), customer);
+    }
+
+    @Override
+    public Long count() {
+        return (long) customers.size();
     }
 }
