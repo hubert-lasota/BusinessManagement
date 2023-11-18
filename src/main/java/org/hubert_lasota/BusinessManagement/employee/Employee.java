@@ -98,9 +98,10 @@ public class Employee {
 
         @Override
         public String toString() {
-            return streetWithNumber + "\n"
-                    + postalCode + " " + city + "\n"
-                    + country;
+            return "street: " + streetWithNumber + "\n"
+                    + "postal code: " + postalCode + "\n"
+                    + "city: " + city + "\n"
+                    + "country: " + country;
         }
 
     }
@@ -162,7 +163,8 @@ public class Employee {
         return  "ID[" + ID + "]\n"
                 + firstName + " " + lastName + "\n"
                 + "Date of birth: " + dateOfBirth.toString() + "\n"
-                + profession.toString().toLowerCase() + "\n" + "Salary: " + salary + "PLN\n"
+                + "Profession: " + profession.toString().toLowerCase() + "\n"
+                + "Salary: " + salary + " PLN\n"
                 + address.toString();
     }
 

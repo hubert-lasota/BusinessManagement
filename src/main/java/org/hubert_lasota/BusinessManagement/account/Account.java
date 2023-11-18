@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.security;
+package org.hubert_lasota.BusinessManagement.account;
 
 import java.util.Arrays;
 import java.util.List;

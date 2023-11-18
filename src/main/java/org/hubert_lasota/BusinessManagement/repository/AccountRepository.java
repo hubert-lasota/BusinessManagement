@@ -1,7 +1,7 @@
 package org.hubert_lasota.BusinessManagement.repository;
 
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
-import org.hubert_lasota.BusinessManagement.security.Account;
+import org.hubert_lasota.BusinessManagement.account.Account;
 
 import java.util.HashMap;
 import java.util.List;
