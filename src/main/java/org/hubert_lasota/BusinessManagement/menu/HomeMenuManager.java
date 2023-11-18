@@ -1,25 +1,25 @@
-package org.hubert_lasota.BusinessManagement;
+package org.hubert_lasota.BusinessManagement.menu;
 
-import org.hubert_lasota.BusinessManagement.customer.CustomerMenuManager;
+import org.hubert_lasota.BusinessManagement.account.Account;
 import org.hubert_lasota.BusinessManagement.exception.WrongInputException;
-import org.hubert_lasota.BusinessManagement.order.OrderMenuManager;
-import org.hubert_lasota.BusinessManagement.product.ProductMenuManager;
 
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.HomeMenuUIData.*;
 import static org.hubert_lasota.BusinessManagement.BusinessManagementConsole.userInput;
 
-public class HomeMenuManager {
+public class HomeMenuManager implements Menu {
     private static HomeMenuManager homeMenuManager;
     private OrderMenuManager orderMenuManager;
     private CustomerMenuManager customerMenuManager;
     private ProductMenuManager productMenuManager;
+    private AccountMenuManager accountMenuManager;
+    private Account account;
 
     private HomeMenuManager() {
         orderMenuManager = OrderMenuManager.getInstance();
         customerMenuManager = CustomerMenuManager.getInstance();
         productMenuManager = ProductMenuManager.getInstance();
-
+        accountMenuManager = AccountMenuManager.getInstance();
     }
 
     public static HomeMenuManager getInstance() {
@@ -29,7 +29,8 @@ public class HomeMenuManager {
         return homeMenuManager;
     }
 
-    public void homeMenu() {
+    @Override
+    public void generateMenu() {
       while (true) {
            System.out.println(createTable(HOME_MENU_TITLE, HOME_MENU_CONTENT));
 
@@ -37,16 +38,17 @@ public class HomeMenuManager {
            userInput.nextLine();
            switch (result) {
                case 1:
-                   orderMenuManager.orderMenu();
+                   orderMenuManager.generateMenu();
                    break;
                case 2:
-                    customerMenuManager.customerMenu();
+                    customerMenuManager.generateMenu();
                    break;
                case 3:
-                   productMenuManager.productMenu();
+                   productMenuManager.generateMenu();
                    break;
                case 4:
-                   //myAccountMenu();
+                   accountMenuManager.setAccount(account);
+                   accountMenuManager.generateMenu();
                    break;
                case 5:
                    //adminMenu();
@@ -61,6 +63,10 @@ public class HomeMenuManager {
 
            }
        }
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     private void exit() {

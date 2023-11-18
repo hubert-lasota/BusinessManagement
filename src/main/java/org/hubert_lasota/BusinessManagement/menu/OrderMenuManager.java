@@ -1,14 +1,13 @@
-package org.hubert_lasota.BusinessManagement.order;
+package org.hubert_lasota.BusinessManagement.menu;
 
-import org.hubert_lasota.BusinessManagement.BusinessManagementConsole;
-import org.hubert_lasota.BusinessManagement.customer.CustomerRepository;
 import org.hubert_lasota.BusinessManagement.exception.NoOrdersInDatabaseException;
 import org.hubert_lasota.BusinessManagement.exception.NoProductsInDatabaseException;
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
 import org.hubert_lasota.BusinessManagement.exception.WrongInputException;
+import org.hubert_lasota.BusinessManagement.order.Order;
+import org.hubert_lasota.BusinessManagement.product.OrderRepository;
 import org.hubert_lasota.BusinessManagement.product.Product;
-import org.hubert_lasota.BusinessManagement.product.ProductMenuManager;
-import org.hubert_lasota.BusinessManagement.product.ProductRepository;
+import org.hubert_lasota.BusinessManagement.repository.ProductRepository;
 
 import java.util.*;
 
@@ -16,7 +15,7 @@ import static org.hubert_lasota.BusinessManagement.BusinessManagementConsole.use
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.OrderMenuUIData.*;
 
-public class OrderMenuManager {
+public class OrderMenuManager implements Menu {
     private static OrderMenuManager orderMenuManager;
     private OrderRepository orderRepository;
     private ProductRepository productRepository;
@@ -35,7 +34,8 @@ public class OrderMenuManager {
         return orderMenuManager;
     }
 
-    public void orderMenu() {
+    @Override
+    public void generateMenu() {
         while (true) {
             System.out.println(createTable(ORDER_MENU_TITLE, ORDER_MENU_CONTENT));
 
@@ -65,7 +65,12 @@ public class OrderMenuManager {
 
     public void createOrder() {
         while (true) {
-            showProducts();
+            try {
+                productMenuManager.showProducts();
+            } catch (NoProductsInDatabaseException e) {
+                System.out.println(createStarFrame(e.getMessage()));
+                return;
+            }
             pickProducts();
 
             if (doContinueOperation("Do you want to add another order y/n?")) {
@@ -104,7 +109,12 @@ public class OrderMenuManager {
 
     public void deleteOrder() {
         while (true) {
-            showProducts();
+            try {
+                productMenuManager.showProducts();
+            } catch (NoProductsInDatabaseException e) {
+                System.out.println(createStarFrame(e.getMessage()));
+                return;
+            }
             System.out.println(createStarFrame("Type product's ID to pick", "Type 'q' to quit"));
             String result = userInput.nextLine();
             if(!isPickedId(result)) {
@@ -119,21 +129,8 @@ public class OrderMenuManager {
         }
     }
 
-
-
-    private void showProducts() {
-        try {
-            productMenuManager.showProducts();
-        } catch (NoProductsInDatabaseException e) {
-            System.out.println(createStarFrame(e.getMessage()));
-        }
-    }
-
     private boolean isPickedId(String result) {
-        if(result.equalsIgnoreCase("q")) {
-            return false;
-        }
-        return true;
+        return !result.equalsIgnoreCase("q");
     }
 
     private boolean doContinueOperation(String message) {

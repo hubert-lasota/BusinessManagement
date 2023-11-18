@@ -1,9 +1,10 @@
-package org.hubert_lasota.BusinessManagement.product;
+package org.hubert_lasota.BusinessManagement.menu;
 
 
 import org.hubert_lasota.BusinessManagement.exception.NoProductsInDatabaseException;
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
 import org.hubert_lasota.BusinessManagement.exception.WrongInputException;
+import org.hubert_lasota.BusinessManagement.product.Product;
 import org.hubert_lasota.BusinessManagement.repository.ProductRepository;
 
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import static org.hubert_lasota.BusinessManagement.BusinessManagementConsole.use
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.ProductMenuUIData.*;
 
-public class ProductMenuManager {
+public class ProductMenuManager implements Menu {
     private static ProductMenuManager productMenuManager;
     private ProductRepository productRepository;
 
@@ -29,8 +30,9 @@ public class ProductMenuManager {
         return productMenuManager;
     }
 
-
-    public void productMenu() {
+    // TODO: add findProducts
+    @Override
+    public void generateMenu() {
         while (true) {
             System.out.println(createTable(PRODUCT_MENU_TITLE, PRODUCT_MENU_CONTENT));
             int inputResult = userInput.nextInt();
@@ -112,7 +114,8 @@ public class ProductMenuManager {
         productRepository.delete(id);
     }
 
-    public void showProducts() throws NoProductsInDatabaseException {
+
+    public void showProducts() {
         System.out.println(createTitleOfTable("PRODUCTS"));
         List<Product> products = productRepository.findAll().orElseThrow(NoProductsInDatabaseException::new);
         products.forEach(System.out::println);
@@ -135,30 +138,47 @@ public class ProductMenuManager {
         }
     }
 
-    private void editProduct(Product product) {
-        System.out.println(createTable("Edit: " + product.getName(), PRODUCT_MENU_EDITOR_CONTENT));
+    private void editProduct(Product productToUpdate) {
+        System.out.println(createTable("Edit: " + productToUpdate.getName(), PRODUCT_MENU_EDITOR_CONTENT));
 
-        int r = userInput.nextInt();
+        int inputResult = userInput.nextInt();
         userInput.nextLine();
-        switch (r) {
+        switch (inputResult) {
             case 1:
-                System.out.print("Type new product's name: ");
-                String name = userInput.nextLine();
-                product.setName(name);
+                updateProductsName(productToUpdate);
                 break;
             case 2:
-                System.out.print("Type new product's price: ");
-                String price = userInput.nextLine();
-                product.setPrice(new BigDecimal(price));
+                updateProductsPrice(productToUpdate);
                 break;
             case 3:
-                System.out.print("Type new product's description: ");
-                String description = userInput.nextLine();
-                product.setDescription(description);
+                updateProductsDescription(productToUpdate);
                 break;
             case 4:
-                productRepository.delete(product.getID());
+                productRepository.delete(productToUpdate.getID());
+                break;
+            case 5:
+                return;
+            default:
+                WrongInputException.throwAndCatchException();
         }
+    }
+
+    private void updateProductsName(Product productToUpdate) {
+        System.out.print("Type new product's name: ");
+        String name = userInput.nextLine();
+        productToUpdate.setName(name);
+    }
+
+    private void updateProductsPrice(Product productToUpdate) {
+        System.out.print("Type new product's price: ");
+        String price = userInput.nextLine();
+        productToUpdate.setPrice(new BigDecimal(price));
+    }
+
+    private void updateProductsDescription(Product productToUpdate) {
+        System.out.print("Type new product's description: ");
+        String description = userInput.nextLine();
+        productToUpdate.setDescription(description);
     }
 
 }
