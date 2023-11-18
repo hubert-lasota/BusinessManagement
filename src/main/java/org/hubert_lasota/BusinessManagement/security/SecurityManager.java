@@ -1,5 +1,6 @@
 package org.hubert_lasota.BusinessManagement.security;
 
+import org.hubert_lasota.BusinessManagement.account.Account;
 import org.hubert_lasota.BusinessManagement.repository.AccountRepository;
 
 import java.util.List;
