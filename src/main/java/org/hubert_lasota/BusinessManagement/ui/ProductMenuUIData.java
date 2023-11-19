@@ -6,7 +6,8 @@ public class ProductMenuUIData {
             "1. Create product",
             "2. Delete product",
             "3. Show products",
-            "4. Go back to home menu"
+            "4. Find product",
+            "5. Go back to home menu"
     };
 
     public static final String[] PRODUCT_MENU_DELETE_CONTENT = {
@@ -29,4 +30,12 @@ public class ProductMenuUIData {
             "5. Go back to product's menu"
     };
 
+    public static final String PRODUCT_MENU_FIND_PRODUCTS_TITLE = "FIND PRODUCTS";
+
+    public static final String[] PRODUCT_MENU_FIND_PRODUCTS_CONTENT = {
+            "Do you want to search by:",
+            "1. Name",
+            "2. Price",
+            "3. Description"
+    };
 }

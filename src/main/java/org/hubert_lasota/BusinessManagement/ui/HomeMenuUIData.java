@@ -7,9 +7,10 @@ public class HomeMenuUIData {
             "2. Customers",
             "3. Products",
             "4. My account",
-            "5. Administrator menu",
-            "6. Logout",
-            "7. Exit"
+            "5. Warehouse",
+            "6. Administrator menu",
+            "7. Logout",
+            "8. Exit"
     };
 
     public static final String[] HOME_MENU_LOG_OUT_MESSAGE = {

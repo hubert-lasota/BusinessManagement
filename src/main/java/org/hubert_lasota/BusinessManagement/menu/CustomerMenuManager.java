@@ -117,7 +117,7 @@ public class CustomerMenuManager implements Menu {
         customerRepository.delete(id);
     }
 
-    public void showCustomers() throws NoCustomersInDatabaseException {
+    public void showCustomers() {
         System.out.println(createTitleOfTable("CUSTOMERS"));
         List <Customer> customers;
 

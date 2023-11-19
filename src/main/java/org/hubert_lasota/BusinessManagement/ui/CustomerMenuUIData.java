@@ -29,7 +29,7 @@ public class CustomerMenuUIData {
     };
 
     public static final String[] CUSTOMER_MENU_OPEN_EDITOR_MESSAGE = {
-            "If you want to open editor o customer",
+            "If you want to open editor on customer",
             "Type customer's ID",
             "If you want to quit. Type 'q'"
     };

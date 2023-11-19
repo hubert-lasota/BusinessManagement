@@ -50,12 +50,15 @@ public class HomeMenuManager implements Menu {
                    accountMenuManager.generateMenu();
                    break;
                case 5:
-                   //adminMenu();
+                   // warehouse
                    break;
                case 6:
+                   //adminMenu();
+                   break;
+               case 7:
                    System.out.println(createTableFrame(HOME_MENU_LOG_OUT_MESSAGE));
                     return;
-               case 7:
+               case 8:
                    exit();
                default:
                    WrongInputException.throwAndCatchException();

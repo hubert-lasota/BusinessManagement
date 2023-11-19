@@ -8,7 +8,9 @@ import org.hubert_lasota.BusinessManagement.product.Product;
 import org.hubert_lasota.BusinessManagement.repository.ProductRepository;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hubert_lasota.BusinessManagement.reader.Reader.*;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
@@ -30,7 +32,6 @@ public class ProductMenuManager implements Menu {
         return productMenuManager;
     }
 
-    // TODO: add findProducts
     @Override
     public void generateMenu() {
         while (true) {
@@ -53,6 +54,11 @@ public class ProductMenuManager implements Menu {
                     openEditorOnProduct();
                     break;
                 case 4:
+                    if(findProducts()) {
+                        openEditorOnProduct();
+                    }                  
+                    break;
+                case 5:
                     return;
                 default:
                     WrongInputException.throwAndCatchException();
@@ -178,4 +184,93 @@ public class ProductMenuManager implements Menu {
         productToUpdate.setDescription(description);
     }
 
+    public boolean findProducts() {
+        System.out.println(createTable(PRODUCT_MENU_FIND_PRODUCTS_TITLE,
+                PRODUCT_MENU_FIND_PRODUCTS_CONTENT));
+        int result = readInt();
+        List<Product> foundProducts = findProductsByData(result);
+
+        if (!foundProducts.isEmpty()) {
+            foundProducts.forEach(System.out::println);
+            return true;
+        }
+        return false;
+    }
+
+    private List<Product> findProductsByData(int result) {
+        switch (result) {
+            case 1:
+                return findProductsByNameAndHandleException();
+            case 2:
+                return findProductsByPriceAndHandleException();
+            case 3:
+                return findProductsByDescriptionAndHandleException();
+            default:
+                WrongInputException.throwAndCatchException();
+        }
+        return Collections.emptyList();
+    }
+
+    private List<Product> findProductsByNameAndHandleException() {
+        try {
+            return findProductsByName();
+        } catch (NoProductsInDatabaseException e) {
+            System.out.println(createStarFrame(e.getMessage()));
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Product> findProductsByName() {
+        System.out.print("Type product's name: ");
+        String name = readLine();
+        return productRepository.findByData(name, Product::getName)
+                .orElseThrow(() -> new NoProductsInDatabaseException("There are no products with this name"));
+    }
+
+    private List<Product> findProductsByPriceAndHandleException() {
+        try {
+            return findProductsByPrice();
+        } catch (NoProductsInDatabaseException e) {
+            System.out.println(createStarFrame(e.getMessage()));
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Product> findProductsByPrice() {
+        System.out.println("You need to type lower and upper price limits");
+        System.out.print("Lower: ");
+        BigDecimal lowerPrice = new BigDecimal(readLine());
+        System.out.print("Upper: ");
+        BigDecimal upperPrice = new BigDecimal(readLine());
+        List<Product> products = findProductsBetweenPrices(lowerPrice, upperPrice);
+
+        if(!products.isEmpty()) {
+            return products;
+        } else {
+            throw new NoProductsInDatabaseException("There are no products with these price range");
+        }
+    }
+
+    private List<Product> findProductsBetweenPrices(BigDecimal lowerPrice, BigDecimal upperPrice) {
+        return productRepository.findAll().orElseThrow(NoProductsInDatabaseException::new)
+                .stream()
+                .filter(p -> p.getPrice().compareTo(lowerPrice) >= 0 && p.getPrice().compareTo(upperPrice) <= 0)
+                .collect(Collectors.toList());
+    }
+
+    private List<Product> findProductsByDescriptionAndHandleException() {
+        try {
+            return findProductsByDescription();
+        } catch (NoProductsInDatabaseException e) {
+            System.out.println(createStarFrame(e.getMessage()));
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Product> findProductsByDescription() {
+        System.out.print("Type product's description: ");
+        String description = readLine();
+        return productRepository.findByData(description, Product::getDescription)
+                .orElseThrow(() -> new NoProductsInDatabaseException("There are no products with this description"));
+    }
 }
