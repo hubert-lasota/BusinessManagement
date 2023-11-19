@@ -39,8 +39,8 @@ public class Employee {
             return this;
         }
 
-        public Builder address(String addressLine, String postalCode, String city, String country) {
-            this.address.streetWithNumber = addressLine;
+        public Builder address(String streetWithNumber, String postalCode, String city, String country) {
+            this.address.streetWithNumber = streetWithNumber;
             this.address.postalCode = postalCode;
             this.address.city = city;
             this.address.country = country;

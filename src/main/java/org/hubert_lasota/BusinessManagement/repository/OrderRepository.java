@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.product;
+package org.hubert_lasota.BusinessManagement.repository;
 
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
 import org.hubert_lasota.BusinessManagement.order.Order;

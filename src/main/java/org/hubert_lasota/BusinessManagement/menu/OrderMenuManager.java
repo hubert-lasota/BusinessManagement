@@ -5,13 +5,14 @@ import org.hubert_lasota.BusinessManagement.exception.NoProductsInDatabaseExcept
 import org.hubert_lasota.BusinessManagement.exception.NoSuchIdException;
 import org.hubert_lasota.BusinessManagement.exception.WrongInputException;
 import org.hubert_lasota.BusinessManagement.order.Order;
-import org.hubert_lasota.BusinessManagement.product.OrderRepository;
+import org.hubert_lasota.BusinessManagement.repository.OrderRepository;
 import org.hubert_lasota.BusinessManagement.product.Product;
 import org.hubert_lasota.BusinessManagement.repository.ProductRepository;
 
 import java.util.*;
 
-import static org.hubert_lasota.BusinessManagement.BusinessManagementConsole.userInput;
+import static org.hubert_lasota.BusinessManagement.reader.Reader.readInt;
+import static org.hubert_lasota.BusinessManagement.reader.Reader.readLine;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.OrderMenuUIData.*;
 
@@ -39,8 +40,7 @@ public class OrderMenuManager implements Menu {
         while (true) {
             System.out.println(createTable(ORDER_MENU_TITLE, ORDER_MENU_CONTENT));
 
-            int inputResult = userInput.nextInt();
-            userInput.nextLine();
+            int inputResult = readInt();
             switch (inputResult) {
                 case 1:
                     createOrder();
@@ -85,7 +85,7 @@ public class OrderMenuManager implements Menu {
         Long id;
         Map<Product, Integer> products = new HashMap<>();
         while (true) {
-            result = userInput.nextLine();
+            result = readLine();
             if(result.equalsIgnoreCase("q")) {
                 break;
             }
@@ -97,8 +97,7 @@ public class OrderMenuManager implements Menu {
 
     private void putProduct(Long id, Map<Product, Integer> products) {
         System.out.println("Type quantity: ");
-        Integer quantity = userInput.nextInt();
-        userInput.nextLine();
+        Integer quantity = readInt();
         Product product = productRepository.findById(id).orElseThrow(NoSuchIdException::new);
         if (products.containsKey(product)) {
             products.compute(product, (k,v) -> v = quantity);
@@ -116,7 +115,7 @@ public class OrderMenuManager implements Menu {
                 return;
             }
             System.out.println(createStarFrame("Type product's ID to pick", "Type 'q' to quit"));
-            String result = userInput.nextLine();
+            String result = readLine();
             if(!isPickedId(result)) {
                 return;
             }
@@ -135,7 +134,7 @@ public class OrderMenuManager implements Menu {
 
     private boolean doContinueOperation(String message) {
         System.out.println(createTableFrame(message));
-        String continueInput = userInput.nextLine();
+        String continueInput = readLine();
         if(continueInput.equalsIgnoreCase("n")) {
             return false;
         }

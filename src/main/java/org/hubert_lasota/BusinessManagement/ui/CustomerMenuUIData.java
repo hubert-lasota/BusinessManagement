@@ -27,4 +27,22 @@ public class CustomerMenuUIData {
             "5. City",
             "6. Country"
     };
+
+    public static final String[] CUSTOMER_MENU_OPEN_EDITOR_MESSAGE = {
+            "If you want to open editor o customer",
+            "Type customer's ID",
+            "If you want to quit. Type 'q'"
+    };
+
+
+    public static final String[] CUSTOMER_MENU_EDITOR_CONTENT = {
+            "1. Change customer's name",
+            "2. Change customer's ",
+                "\tstreet with number",
+            "3. Change customer's postal code",
+            "4. Change customer's city",
+            "5. Change customer's country",
+            "6. Delete this customer",
+            "7. Go back to customer's menu"
+    };
 }

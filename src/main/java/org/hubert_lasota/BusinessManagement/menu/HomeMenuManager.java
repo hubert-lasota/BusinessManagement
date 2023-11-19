@@ -3,9 +3,9 @@ package org.hubert_lasota.BusinessManagement.menu;
 import org.hubert_lasota.BusinessManagement.account.Account;
 import org.hubert_lasota.BusinessManagement.exception.WrongInputException;
 
+import static org.hubert_lasota.BusinessManagement.reader.Reader.readInt;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.HomeMenuUIData.*;
-import static org.hubert_lasota.BusinessManagement.BusinessManagementConsole.userInput;
 
 public class HomeMenuManager implements Menu {
     private static HomeMenuManager homeMenuManager;
@@ -34,8 +34,7 @@ public class HomeMenuManager implements Menu {
       while (true) {
            System.out.println(createTable(HOME_MENU_TITLE, HOME_MENU_CONTENT));
 
-           int result = userInput.nextInt();
-           userInput.nextLine();
+           int result = readInt();
            switch (result) {
                case 1:
                    orderMenuManager.generateMenu();
@@ -60,7 +59,6 @@ public class HomeMenuManager implements Menu {
                    exit();
                default:
                    WrongInputException.throwAndCatchException();
-
            }
        }
     }
@@ -70,7 +68,7 @@ public class HomeMenuManager implements Menu {
     }
 
     private void exit() {
-        System.out.println(createTableFrame());
+        System.out.println(createTableFrame(HOME_MENU_EXIT_MESSAGE));
         System.exit(0);
     }
 

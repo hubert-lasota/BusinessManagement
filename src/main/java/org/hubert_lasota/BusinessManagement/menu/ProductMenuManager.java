@@ -10,7 +10,7 @@ import org.hubert_lasota.BusinessManagement.repository.ProductRepository;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.hubert_lasota.BusinessManagement.BusinessManagementConsole.userInput;
+import static org.hubert_lasota.BusinessManagement.reader.Reader.*;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.ProductMenuUIData.*;
 
@@ -35,8 +35,7 @@ public class ProductMenuManager implements Menu {
     public void generateMenu() {
         while (true) {
             System.out.println(createTable(PRODUCT_MENU_TITLE, PRODUCT_MENU_CONTENT));
-            int inputResult = userInput.nextInt();
-            userInput.nextLine();
+            int inputResult = readInt();
             switch (inputResult) {
                 case 1:
                     createProduct();
@@ -74,7 +73,7 @@ public class ProductMenuManager implements Menu {
             }
 
             System.out.println(createTableFrame("Do you want to add another product y/n?"));
-            String continueInput = userInput.nextLine();
+            String continueInput = readLine();
             if (continueInput.equalsIgnoreCase("n")) {
                 break;
             }
@@ -84,11 +83,11 @@ public class ProductMenuManager implements Menu {
     private Product productForm() {
         System.out.println(createTitleOfTable("CREATING NEW PRODUCT"));
         System.out.print("Type product's name: ");
-        String name = userInput.nextLine();
+        String name = readLine();
         System.out.print("Type product's price: ");
-        BigDecimal price = new BigDecimal(userInput.nextLine());
+        BigDecimal price = new BigDecimal(readLine());
         System.out.print("Type product's description: ");
-        String description = userInput.nextLine();
+        String description = readLine();
         return new Product(name, price, description);
     }
 
@@ -109,8 +108,7 @@ public class ProductMenuManager implements Menu {
             System.out.println(createStarFrame(e.getMessage()));
             return;
         }
-        Long id = userInput.nextLong();
-        userInput.nextLine();
+        Long id = readLong();
         productRepository.delete(id);
     }
 
@@ -124,7 +122,7 @@ public class ProductMenuManager implements Menu {
     public void openEditorOnProduct() {
         System.out.println(createStarFrame(PRODUCT_MENU_OPEN_EDITOR_MESSAGE));
 
-        String inputResult = userInput.nextLine();
+        String inputResult = readLine();
         if(!(inputResult.equals("q"))) {
             Long id = Long.parseLong(inputResult);
             Product product;
@@ -141,8 +139,7 @@ public class ProductMenuManager implements Menu {
     private void editProduct(Product productToUpdate) {
         System.out.println(createTable("Edit: " + productToUpdate.getName(), PRODUCT_MENU_EDITOR_CONTENT));
 
-        int inputResult = userInput.nextInt();
-        userInput.nextLine();
+        int inputResult = readInt();
         switch (inputResult) {
             case 1:
                 updateProductsName(productToUpdate);
@@ -165,19 +162,19 @@ public class ProductMenuManager implements Menu {
 
     private void updateProductsName(Product productToUpdate) {
         System.out.print("Type new product's name: ");
-        String name = userInput.nextLine();
+        String name = readLine();
         productToUpdate.setName(name);
     }
 
     private void updateProductsPrice(Product productToUpdate) {
         System.out.print("Type new product's price: ");
-        String price = userInput.nextLine();
+        String price = readLine();
         productToUpdate.setPrice(new BigDecimal(price));
     }
 
     private void updateProductsDescription(Product productToUpdate) {
         System.out.print("Type new product's description: ");
-        String description = userInput.nextLine();
+        String description = readLine();
         productToUpdate.setDescription(description);
     }
 

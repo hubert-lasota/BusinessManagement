@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.hubert_lasota.BusinessManagement.BusinessManagementConsole.userInput;
+import static org.hubert_lasota.BusinessManagement.reader.Reader.*;
 import static org.hubert_lasota.BusinessManagement.ui.CustomerMenuUIData.*;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 
@@ -35,8 +35,7 @@ public class CustomerMenuManager implements Menu {
     public void generateMenu() {
         while (true) {
             System.out.println(createTable(CUSTOMER_MENU_TITLE, CUSTOMER_MENU_CONTENT));
-            int inputResult = userInput.nextInt();
-            userInput.nextLine();
+            int inputResult = readInt();
             switch (inputResult) {
                 case 1:
                     createCustomer();
@@ -77,7 +76,7 @@ public class CustomerMenuManager implements Menu {
             }
 
             System.out.println(createTableFrame("Do you want to add another customer y/n?"));
-            String continueInput = userInput.nextLine();
+            String continueInput = readLine();
             if (continueInput.equalsIgnoreCase("n")) {
                 break;
             }
@@ -87,15 +86,15 @@ public class CustomerMenuManager implements Menu {
     private Customer customerForm() {
         System.out.println(createTitleOfTable("ADDING NEW CUSTOMER"));
         System.out.print("Type customer's name: ");
-        String name = userInput.nextLine();
+        String name = readLine();
         System.out.print("Type customer's street with number: ");
-        String streetWithNumber = userInput.nextLine();
+        String streetWithNumber = readLine();
         System.out.print("Type customer's postal code: ");
-        String postalCode = userInput.nextLine();
+        String postalCode = readLine();
         System.out.print("Type customer's city: ");
-        String city = userInput.nextLine();
+        String city = readLine();
         System.out.print("Type customer's country: ");
-        String country = userInput.nextLine();
+        String country = readLine();
 
         Customer.Address address = new Customer.Address(streetWithNumber, postalCode, city, country);
         return new Customer(name, address);
@@ -114,8 +113,7 @@ public class CustomerMenuManager implements Menu {
             System.out.println(createStarFrame(exc.getMessage()));
             return;
         }
-        Long id = userInput.nextLong();
-        userInput.nextLine();
+        Long id = readLong();
         customerRepository.delete(id);
     }
 
@@ -132,7 +130,7 @@ public class CustomerMenuManager implements Menu {
     private void openEditorOnCustomer() {
         System.out.println(createStarFrame(CUSTOMER_MENU_OPEN_EDITOR_MESSAGE));
 
-        String inputResult = userInput.nextLine();
+        String inputResult = readLine();
         if(!(inputResult.equals("q"))) {
             Long id = Long.parseLong(inputResult);
             Customer customer;
@@ -149,8 +147,7 @@ public class CustomerMenuManager implements Menu {
     private void editCustomer(Customer customerToUpdate) {
         System.out.println(createTable("Edit: " + customerToUpdate.getName(), CUSTOMER_MENU_EDITOR_CONTENT));
 
-        int inputResult = userInput.nextInt();
-        userInput.nextLine();
+        int inputResult = readInt();
         switch (inputResult) {
             case 1:
                 updateCustomersName(customerToUpdate);
@@ -179,38 +176,37 @@ public class CustomerMenuManager implements Menu {
 
     private void updateCustomersName(Customer customerToUpdate) {
         System.out.println("Type new customer's name: ");
-        String name = userInput.nextLine();
+        String name = readLine();
         customerToUpdate.setName(name);
     }
 
     private void updateCustomersStreetWithNumber(Customer customerToUpdate) {
         System.out.println("Type new customer's street with number: ");
-        String streetWithNumber = userInput.nextLine();
+        String streetWithNumber = readLine();
         customerToUpdate.setStreetWithNumber(streetWithNumber);
     }
 
     private void updateCustomersPostalCode(Customer customerToUpdate) {
         System.out.println("Type new customer's postal code: ");
-        String postalCode = userInput.nextLine();
+        String postalCode = readLine();
         customerToUpdate.setPostalCode(postalCode);
     }
 
     private void updateCustomersCity(Customer customerToUpdate) {
         System.out.println("Type new customer's city: ");
-        String city = userInput.nextLine();
+        String city = readLine();
         customerToUpdate.setCity(city);
     }
 
     private void updateCustomersCountry(Customer customerToUpdate) {
         System.out.println("Type new customer's country: ");
-        String country = userInput.nextLine();
+        String country = readLine();
         customerToUpdate.setCountry(country);
     }
 
     public boolean findCustomers() {
         System.out.println(createTable(CUSTOMER_MENU_FIND_CUSTOMERS_TITLE, CUSTOMER_MENU_FIND_CUSTOMERS_CONTENT));
-        int result = userInput.nextInt();
-        userInput.nextLine();
+        int result = readInt();
 
         List<Customer> customers = findCustomersByData(result);
         if(!customers.isEmpty()) {
@@ -264,14 +260,13 @@ public class CustomerMenuManager implements Menu {
 
     private Customer findCustomerById() {
         System.out.print("Type customer's ID: ");
-        Long id = userInput.nextLong();
-        userInput.nextLine();
+        Long id = readLong();
         return customerRepository.findById(id).orElseThrow(NoSuchIdException::new);
     }
 
     private List<Customer> findCustomersByData(String dataFieldToPrint, Function<Customer, String> fieldExtractor) {
         System.out.println("Type customer's " + dataFieldToPrint + ": ");
-        String data = userInput.nextLine();
+        String data = readLine();
         return customerRepository.findByData(data, fieldExtractor)
                         .orElseThrow(() -> new NoCustomersInDatabaseException("There are no customers with this data!"));
     }
