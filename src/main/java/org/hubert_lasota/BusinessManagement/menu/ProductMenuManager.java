@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hubert_lasota.BusinessManagement.reader.Reader.*;
+import static org.hubert_lasota.BusinessManagement.input.UserInputReader.*;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.ProductMenuUIData.*;
 
@@ -91,7 +91,7 @@ public class ProductMenuManager implements Menu {
         System.out.print("Type product's name: ");
         String name = readLine();
         System.out.print("Type product's price: ");
-        BigDecimal price = new BigDecimal(readLine());
+        BigDecimal price = readBigDecimal();
         System.out.print("Type product's description: ");
         String description = readLine();
         return new Product(name, price, description);
@@ -174,8 +174,7 @@ public class ProductMenuManager implements Menu {
 
     private void updateProductsPrice(Product productToUpdate) {
         System.out.print("Type new product's price: ");
-        String price = readLine();
-        productToUpdate.setPrice(new BigDecimal(price));
+        productToUpdate.setPrice(readBigDecimal());
     }
 
     private void updateProductsDescription(Product productToUpdate) {
@@ -239,9 +238,9 @@ public class ProductMenuManager implements Menu {
     private List<Product> findProductsByPrice() {
         System.out.println("You need to type lower and upper price limits");
         System.out.print("Lower: ");
-        BigDecimal lowerPrice = new BigDecimal(readLine());
+        BigDecimal lowerPrice = readBigDecimal();
         System.out.print("Upper: ");
-        BigDecimal upperPrice = new BigDecimal(readLine());
+        BigDecimal upperPrice = readBigDecimal();
         List<Product> products = findProductsBetweenPrices(lowerPrice, upperPrice);
 
         if(!products.isEmpty()) {

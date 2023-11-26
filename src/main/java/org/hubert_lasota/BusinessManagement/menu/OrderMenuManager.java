@@ -11,8 +11,8 @@ import org.hubert_lasota.BusinessManagement.repository.ProductRepository;
 
 import java.util.*;
 
-import static org.hubert_lasota.BusinessManagement.reader.Reader.readInt;
-import static org.hubert_lasota.BusinessManagement.reader.Reader.readLine;
+import static org.hubert_lasota.BusinessManagement.input.UserInputReader.readInt;
+import static org.hubert_lasota.BusinessManagement.input.UserInputReader.readLine;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.OrderMenuUIData.*;
 

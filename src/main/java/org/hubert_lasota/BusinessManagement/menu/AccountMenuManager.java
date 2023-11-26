@@ -10,8 +10,8 @@ import org.hubert_lasota.BusinessManagement.repository.EmployeeRepository;
 
 import java.time.LocalDate;
 
-import static org.hubert_lasota.BusinessManagement.reader.Reader.readInt;
-import static org.hubert_lasota.BusinessManagement.reader.Reader.readLine;
+import static org.hubert_lasota.BusinessManagement.input.UserInputReader.readInt;
+import static org.hubert_lasota.BusinessManagement.input.UserInputReader.readLine;
 import static org.hubert_lasota.BusinessManagement.ui.AccountMenuUIData.*;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 

@@ -3,7 +3,7 @@ package org.hubert_lasota.BusinessManagement.menu;
 import org.hubert_lasota.BusinessManagement.account.Account;
 import org.hubert_lasota.BusinessManagement.exception.WrongInputException;
 
-import static org.hubert_lasota.BusinessManagement.reader.Reader.readInt;
+import static org.hubert_lasota.BusinessManagement.input.UserInputReader.readInt;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 import static org.hubert_lasota.BusinessManagement.ui.HomeMenuUIData.*;
 
@@ -57,7 +57,7 @@ public class HomeMenuManager implements Menu {
                    break;
                case 7:
                    System.out.println(createTableFrame(HOME_MENU_LOG_OUT_MESSAGE));
-                    return;
+                   return;
                case 8:
                    exit();
                default:

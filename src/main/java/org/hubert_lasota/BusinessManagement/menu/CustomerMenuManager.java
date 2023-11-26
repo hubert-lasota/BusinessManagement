@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.hubert_lasota.BusinessManagement.reader.Reader.*;
+import static org.hubert_lasota.BusinessManagement.input.UserInputReader.*;
 import static org.hubert_lasota.BusinessManagement.ui.CustomerMenuUIData.*;
 import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.*;
 
