@@ -9,9 +9,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
-public class EmployeeRepository  implements Repository<Employee> {
+public class EmployeeRepository  implements Repository<Employee, Long> {
     private static EmployeeRepository employeeRepository;
-    private Map<Long, Employee> employees;
+    private final Map<Long, Employee> employees;
 
     private EmployeeRepository() {
         employees = new HashMap<>();
@@ -26,7 +26,8 @@ public class EmployeeRepository  implements Repository<Employee> {
 
     @Override
     public Employee save(Employee employee) {
-        return employees.putIfAbsent(employee.getID(), employee);
+        employees.putIfAbsent(employee.getID(), employee);
+        return employee;
     }
 
     @Override
@@ -38,6 +39,7 @@ public class EmployeeRepository  implements Repository<Employee> {
         List<Employee> tempList =  employees.values().stream()
                 .filter(e -> fieldExtractor.apply(e).contains(data))
                 .collect(Collectors.toList());
+
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
     }
 
@@ -45,22 +47,6 @@ public class EmployeeRepository  implements Repository<Employee> {
     public Optional<List<Employee>> findAll() {
         List<Employee> tempList = List.copyOf(employees.values());
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
-    }
-
-    @Override
-    public Employee update(Long id, Employee employee) {
-        Employee tempEmployee = findById(id).orElseThrow(NoSuchIdException::new);
-        return update(tempEmployee, employee);
-    }
-
-    private Employee update(Employee employeeToUpdate, Employee employeeUpdater) {
-        employeeToUpdate.setFirstName(employeeUpdater.getFirstName());
-        employeeToUpdate.setLastName(employeeUpdater.getLastName());
-        employeeToUpdate.setDateOfBirth(employeeUpdater.getDateOfBirth());
-        employeeToUpdate.setAddress(employeeUpdater.getAddress());
-        employeeToUpdate.setSalary(employeeUpdater.getSalary());
-        employeeToUpdate.setProfession(employeeUpdater.getProfession());
-        return employeeToUpdate;
     }
 
     @Override

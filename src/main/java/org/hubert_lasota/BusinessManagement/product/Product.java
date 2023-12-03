@@ -12,10 +12,10 @@ public class Product {
     private String description;
 
     public Product(String name, BigDecimal price) {
+        ID = incrementID++;
         this.name = name;
         this.price = price;
         this.description = "no description";
-        ID = incrementID++;
     }
 
     public Product(String name, BigDecimal price, String description) {

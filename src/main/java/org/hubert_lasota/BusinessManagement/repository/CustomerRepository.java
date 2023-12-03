@@ -8,9 +8,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CustomerRepository implements Repository<Customer> {
+public class CustomerRepository implements Repository<Customer, Long> {
     private static CustomerRepository customerRepository;
-    private Map<Long, Customer> customers;
+    private final Map<Long, Customer> customers;
 
     private CustomerRepository() {
         customers = new HashMap<>();
@@ -25,7 +25,8 @@ public class CustomerRepository implements Repository<Customer> {
 
     @Override
     public Customer save(Customer customer) {
-        return customers.putIfAbsent(customer.getID(), customer);
+        customers.putIfAbsent(customer.getID(), customer);
+        return customer;
     }
 
     @Override
@@ -52,18 +53,6 @@ public class CustomerRepository implements Repository<Customer> {
     public Optional<List<Customer>> findAll() {
         List<Customer> tempList = List.copyOf(customers.values());
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList) ;
-    }
-
-    @Override
-    public Customer update(Long id, Customer customer) {
-        Customer tempCustomer = findById(id).orElseThrow(NoSuchIdException::new);
-        return update(tempCustomer, customer);
-    }
-
-    private Customer update(Customer customerToUpdate, Customer customerUpdater) {
-        customerToUpdate.setName(customerUpdater.getName());
-        customerToUpdate.setAddress(customerUpdater.getAddress());
-        return customerToUpdate;
     }
 
     @Override

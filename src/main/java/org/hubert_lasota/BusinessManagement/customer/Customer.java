@@ -1,5 +1,7 @@
 package org.hubert_lasota.BusinessManagement.customer;
 
+import java.util.Objects;
+
 public class Customer {
     private final Long ID;
     private static long incrementID = 1;
@@ -7,19 +9,19 @@ public class Customer {
     private String name;
     private Address address;
 
-    public Customer(String name, Address address) {
+    public Customer(String name, String streetWithNumber, String postalCode, String city, String country) {
         this.name = name;
-        this.address = address;
+        this.address = new Address(streetWithNumber, postalCode, city, country);
         ID = incrementID++;
     }
 
-    public static class Address {
+    private static class Address {
         private String streetWithNumber;
         private String postalCode;
         private String city;
         private String country;
 
-        public Address(String streetWithNumber, String postalCode, String city, String country) {
+        private Address(String streetWithNumber, String postalCode, String city, String country) {
             this.streetWithNumber = streetWithNumber;
             this.postalCode = postalCode;
             this.city = city;
@@ -72,12 +74,17 @@ public class Customer {
         this.address.country = country;
     }
 
-    public Address getAddress() {
-        return address;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(ID, customer.ID) && Objects.equals(name, customer.name);
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID, name);
     }
 
     @Override

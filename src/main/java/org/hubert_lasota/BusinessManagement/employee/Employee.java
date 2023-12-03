@@ -14,6 +14,20 @@ public class Employee {
     private BigDecimal salary;
     private Address address;
 
+    private Employee(Builder builder) {
+        this.ID = incrementID++;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.dateOfBirth = builder.dateOfBirth;
+        this.profession = builder.profession;
+        this.salary = builder.salary;
+        this.address = builder.address;
+    }
+
+    public static Builder builder(String firstName, String lastName, LocalDate dateOfBirth) {
+        return new Builder(firstName, lastName, dateOfBirth);
+    }
+
     public static class Builder {
         private final String firstName;
         private final String lastName;
@@ -23,7 +37,7 @@ public class Employee {
         private BigDecimal salary = BigDecimal.ZERO;
         private Address address = Address.emptyAddress();
 
-        public Builder(String firstName, String lastName, LocalDate dateOfBirth) {
+        private Builder(String firstName, String lastName, LocalDate dateOfBirth) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.dateOfBirth = dateOfBirth;
@@ -52,17 +66,8 @@ public class Employee {
         }
     }
 
-    private Employee(Builder builder) {
-        this.ID = incrementID++;
-        this.firstName = builder.firstName;
-        this.lastName = builder.lastName;
-        this.dateOfBirth = builder.dateOfBirth;
-        this.profession = builder.profession;
-        this.salary = builder.salary;
-        this.address = builder.address;
-    }
 
-    public static class Address {
+    private static class Address {
         private String streetWithNumber;
         private String postalCode;
         private String city;
@@ -77,23 +82,6 @@ public class Employee {
 
         private static Address emptyAddress() {
             return new Address("none", "none", "none", "none");
-        }
-
-
-        public void setStreetWithNumber(String streetWithNumber) {
-            this.streetWithNumber = streetWithNumber;
-        }
-
-        public void setPostalCode(String postalCode) {
-            this.postalCode = postalCode;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public void setCountry(String country) {
-            this.country = country;
         }
 
         @Override
@@ -150,13 +138,23 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Address getAddress() {
-        return address;
+
+    public void setStreetWithNumber(String streetWithNumber) {
+        address.streetWithNumber = streetWithNumber;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setPostalCode(String postalCode) {
+        address.postalCode = postalCode;
     }
+
+    public void setCity(String city) {
+        address.city = city;
+    }
+
+    public void setCountry(String country) {
+        address.country = country;
+    }
+
 
     @Override
     public String toString() {

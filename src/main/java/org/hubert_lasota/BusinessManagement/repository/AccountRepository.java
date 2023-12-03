@@ -11,9 +11,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
-public class AccountRepository implements Repository<Account> {
+public class AccountRepository implements Repository<Account, String> {
     private static AccountRepository accountRepository;
-    private Map<String, Account> accounts;
+    private final Map<String, Account> accounts;
 
     private AccountRepository() {
         accounts = new HashMap<>();
@@ -28,24 +28,27 @@ public class AccountRepository implements Repository<Account> {
 
     @Override
     public Account save(Account account) {
-        return accounts.putIfAbsent(account.getUsername(), account);
+        accounts.putIfAbsent(account.getUsername(), account);
+        return account;
     }
 
-    @Override
-    public Optional<Account> findById(Long employeeId) {
+    public Optional<Account> findByEmployeeId(Long employeeId) {
         return accounts.values().stream()
                 .filter(a -> a.getEmployeeId().equals(employeeId))
                 .findFirst();
     }
 
-    public Account findByUsername(String username) {
-        return accounts.get(username);
+    @Override
+    public Optional<Account> findById(String username) {
+        return Optional.ofNullable(accounts.get(username));
     }
 
-    public List<Account> findByData(String data, Function<Account, String> fieldExtractor) {
-        return accounts.values().stream()
+    public Optional<List<Account>> findByData(String data, Function<Account, String> fieldExtractor) {
+        List<Account> tempList = accounts.values().stream()
                 .filter(a -> fieldExtractor.apply(a).contains(data))
                 .collect(Collectors.toList());
+
+        return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
     }
 
     @Override
@@ -54,28 +57,14 @@ public class AccountRepository implements Repository<Account> {
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
     }
 
-    @Override
-    public Account update(Long employeeId, Account account) {
-        Account tempAccount = findById(employeeId).orElseThrow(NoSuchIdException::new);
-        return update(tempAccount, account);
-    }
-
-    public Account update(String username, Account account) {
-        Account tempAccount = findByUsername(username);
-        return update(tempAccount, account);
-    }
-
-    private Account update(Account accountToUpdate, Account accountUpdater) {
-        accountToUpdate.setUsername(accountUpdater.getUsername());
-        accountToUpdate.setPassword(accountUpdater.getPassword());
-        accountToUpdate.setRoles(accountUpdater.getRoles());
-        return accountToUpdate;
-    }
-
-    @Override
     public void delete(Long employeeId) {
-        Account account = findById(employeeId).orElseThrow(NoSuchIdException::new);
+        Account account = findByEmployeeId(employeeId).orElseThrow(NoSuchIdException::new);
         accounts.remove(account.getUsername(), account);
+    }
+
+    @Override
+    public void delete(String username) {
+        accounts.remove(username);
     }
 
     @Override

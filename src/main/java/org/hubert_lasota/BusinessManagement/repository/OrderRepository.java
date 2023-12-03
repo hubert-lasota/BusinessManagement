@@ -7,9 +7,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class OrderRepository {
+public class OrderRepository implements Repository<Order, Long> {
     private static OrderRepository orderRepository;
-    private Map<Long, Order> orders;
+    private final Map<Long, Order> orders;
 
 
     private OrderRepository() {
@@ -23,12 +23,13 @@ public class OrderRepository {
         return orderRepository;
     }
 
-
+    @Override
     public Order save(Order order) {
-        return orders.putIfAbsent(order.getID(), order);
+        orders.putIfAbsent(order.getID(), order);
+        return order;
     }
 
-
+    @Override
     public Optional<Order> findById(Long id) {
         return Optional.ofNullable(orders.get(id));
     }
@@ -37,29 +38,24 @@ public class OrderRepository {
         List<Order> tempList = orders.values().stream()
                 .filter(o -> fieldExtractor.apply(o).contains(data))
                 .collect(Collectors.toList());
+
         return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
     }
 
+    @Override
     public Optional<List<Order>> findAll() {
       List<Order> tempList = List.copyOf(orders.values());
       return tempList.isEmpty() ? Optional.empty() : Optional.of(tempList);
     }
 
-    public Order update(Long id, Order order) {
-        Order tempOrder = findById(id).orElseThrow(NoSuchIdException::new);
-        return update(tempOrder, order);
-    }
-
-    private Order update(Order orderToUpdate, Order orderUpdater) {
-        orderToUpdate.setProducts(orderUpdater.getProducts());
-        orderToUpdate.setOrderStatus(orderUpdater.getOrderStatus());
-        orderToUpdate.setOrderComments(orderUpdater.getOrderComments());
-        orderToUpdate.setTotalPrice(orderUpdater.getTotalPrice());
-        return orderToUpdate;
-    }
-
+    @Override
     public void delete(Long id) {
         Order order = findById(id).orElseThrow(NoSuchIdException::new);
         orders.remove(order.getID(), order);
+    }
+
+    @Override
+    public Long count() {
+        return (long) orders.size();
     }
 }
