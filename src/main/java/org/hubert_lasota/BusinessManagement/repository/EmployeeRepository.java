@@ -35,6 +35,7 @@ public class EmployeeRepository  implements Repository<Employee, Long> {
         return Optional.ofNullable(employees.get(id));
     }
 
+    @Override
     public Optional<List<Employee>> findByData(String data, Function<Employee, String> fieldExtractor) {
         List<Employee> tempList =  employees.values().stream()
                 .filter(e -> fieldExtractor.apply(e).contains(data))

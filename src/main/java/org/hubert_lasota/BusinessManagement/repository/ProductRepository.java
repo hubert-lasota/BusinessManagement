@@ -34,6 +34,7 @@ public class ProductRepository implements Repository<Product, Long> {
         return Optional.ofNullable(products.get(id));
     }
 
+    @Override
     public Optional<List<Product>> findByData(String data, Function<Product, String> fieldExtractor) {
         List<Product> tempList = products.values().stream()
                 .filter(p -> fieldExtractor.apply(p).contains(data))

@@ -1,27 +1,27 @@
-package org.hubert_lasota.BusinessManagement.account;
+package org.hubert_lasota.BusinessManagement.user;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Account {
+public class User {
     private Long employeeId;
     private String username;
     private String password;
     private List<String> roles;
 
-    public Account(String username, String password, String... roles) {
+    public User(String username, String password, String... roles) {
         this.username = username;
         this.password = password;
         this.roles = Arrays.asList(roles);
     }
 
-    public Account(Long employeeId, String username, String password, String... roles) {
+    public User(Long employeeId, String username, String password, String... roles) {
         this(username, password, roles);
         this.employeeId = employeeId;
     }
 
-    public Account(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -62,8 +62,8 @@ public class Account {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return Objects.equals(username, account.username);
+        User user = (User) o;
+        return Objects.equals(username, user.username);
     }
 
     @Override

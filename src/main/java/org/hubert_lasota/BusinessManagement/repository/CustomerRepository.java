@@ -41,6 +41,7 @@ public class CustomerRepository implements Repository<Customer, Long> {
                 .findFirst();
     }
 
+    @Override
     public Optional<List<Customer>> findByData(String data, Function<Customer, String> fieldExtractor) {
         List<Customer> tempList = customers.values().stream()
                 .filter(c -> fieldExtractor.apply(c).contains(data))

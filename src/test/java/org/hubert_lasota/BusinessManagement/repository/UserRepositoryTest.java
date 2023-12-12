@@ -1,6 +1,6 @@
 package org.hubert_lasota.BusinessManagement.repository;
 
-import org.hubert_lasota.BusinessManagement.account.Account;
+import org.hubert_lasota.BusinessManagement.user.User;
 import org.hubert_lasota.BusinessManagement.employee.Employee;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -13,20 +13,20 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AccountRepositoryTest {
-    AccountRepository accountRepository = AccountRepository.getInstance();
+public class UserRepositoryTest {
+    UserRepository userRepository = UserRepository.getInstance();
 
     @AfterEach
     void tearDown() throws Exception {
-        Field field = AccountRepository.class.getDeclaredField("accounts");
+        Field field = UserRepository.class.getDeclaredField("users");
         field.setAccessible(true);
-        Map<String, Account> accounts = (Map<String, Account>) field.get(accountRepository);
+        Map<String, User> accounts = (Map<String, User>) field.get(userRepository);
         accounts.clear();
     }
 
     @Test
     void shouldCountZero() {
-        Long actual = accountRepository.count();
+        Long actual = userRepository.count();
         assertEquals(0L, actual);
     }
 
@@ -38,19 +38,19 @@ public class AccountRepositoryTest {
         for(int i = 0; i < counter; i++) {
             username = "user" + i;
             password = "pass" + i;
-            accountRepository.save(new Account(username, password));
+            userRepository.save(new User(username, password));
         }
-        long repositoryCounter = accountRepository.count();
+        long repositoryCounter = userRepository.count();
         assertEquals(counter, repositoryCounter);
     }
 
     @Test
     void shouldSaveAccount() {
-        Account actual = new Account("user", "pass");
-        long repositorySizeBeforeSave = accountRepository.count();
+        User actual = new User("user", "pass");
+        long repositorySizeBeforeSave = userRepository.count();
 
-        Account expected = accountRepository.save(actual);
-        long repositorySizeAfterSave = accountRepository.count();
+        User expected = userRepository.save(actual);
+        long repositorySizeAfterSave = userRepository.count();
 
         assertEquals(expected, actual);
         assertEquals(repositorySizeBeforeSave, repositorySizeAfterSave-1);
@@ -64,20 +64,20 @@ public class AccountRepositoryTest {
         for(int i = 0; i < counter; i++) {
             username = "user" + i;
             password = "pass" + i;
-            accountRepository.save(new Account(username, password));
+            userRepository.save(new User(username, password));
         }
-        long repositorySizeAfterSave = accountRepository.count();
+        long repositorySizeAfterSave = userRepository.count();
         assertEquals(counter, repositorySizeAfterSave);
     }
 
     @Test
     void shouldDeleteAccountByUsername() {
-        Account account = new Account("user", "pass");
-        accountRepository.save(account);
-        long repositorySizeAfterSave = accountRepository.count();
+        User user = new User("user", "pass");
+        userRepository.save(user);
+        long repositorySizeAfterSave = userRepository.count();
 
-        accountRepository.delete(account.getUsername());
-        long repositorySizeAfterDelete = accountRepository.count();
+        userRepository.delete(user.getUsername());
+        long repositorySizeAfterDelete = userRepository.count();
         assertEquals(repositorySizeAfterSave, repositorySizeAfterDelete + 1);
     }
 
@@ -89,15 +89,15 @@ public class AccountRepositoryTest {
         for(int i = 0; i < counter; i++) {
             username = "user" + i;
             password = "pass" + i;
-            accountRepository.save(new Account(username, password));
+            userRepository.save(new User(username, password));
         }
-        long repositorySizeAfterSave = accountRepository.count();
+        long repositorySizeAfterSave = userRepository.count();
 
         for(int i = 0; i < repositorySizeAfterSave; i++) {
-            accountRepository.delete("user" + i);
+            userRepository.delete("user" + i);
         }
 
-        long repositorySizeAfterDelete = accountRepository.count();
+        long repositorySizeAfterDelete = userRepository.count();
         long actualRepositorySize = repositorySizeAfterDelete + repositorySizeAfterSave;
         assertEquals(repositorySizeAfterSave, actualRepositorySize);
     }
@@ -106,12 +106,12 @@ public class AccountRepositoryTest {
     void shouldDeleteAccountByEmployeeId() {
         Employee employee =
                 Employee.builder("firstname", "lastname", LocalDate.now()).build();
-        Account account = new Account(employee.getID(), "user", "pass");
-        accountRepository.save(account);
-        long repositorySizeAfterSave = accountRepository.count();
+        User user = new User(employee.getID(), "user", "pass");
+        userRepository.save(user);
+        long repositorySizeAfterSave = userRepository.count();
 
-        accountRepository.delete(account.getEmployeeId());
-        long repositorySizeAfterDelete = accountRepository.count();
+        userRepository.delete(user.getEmployeeId());
+        long repositorySizeAfterDelete = userRepository.count();
         assertEquals(repositorySizeAfterSave, repositorySizeAfterDelete + 1);
     }
 
@@ -130,68 +130,68 @@ public class AccountRepositoryTest {
             employeeId = employees[i].getID();
             username = "user" + i;
             password = "pass" + i;
-            accountRepository.save(new Account(employeeId, username, password));
+            userRepository.save(new User(employeeId, username, password));
         }
-        long repositorySizeAfterSave = accountRepository.count();
+        long repositorySizeAfterSave = userRepository.count();
 
         for(int i = 0; i < counter; i++) {
-            accountRepository.delete(employees[i].getID());
+            userRepository.delete(employees[i].getID());
         }
 
-        long repositorySizeAfterDelete = accountRepository.count();
+        long repositorySizeAfterDelete = userRepository.count();
         long actualRepositorySize = repositorySizeAfterDelete + repositorySizeAfterSave;
         assertEquals(repositorySizeAfterSave, actualRepositorySize);
     }
 
     @Test
     void shouldFindById() {
-        Account account = new Account("user", "pass");
-        accountRepository.save(account);
-        Account foundAccount = accountRepository.findById(account.getUsername()).get();
-        assertEquals(account, foundAccount);
+        User user = new User("user", "pass");
+        userRepository.save(user);
+        User foundUser = userRepository.findById(user.getUsername()).get();
+        assertEquals(user, foundUser);
     }
 
     @Test
     void shouldNotFindById() {
-        Optional<Account> foundAccount = accountRepository.findById("USERNAME");
+        Optional<User> foundAccount = userRepository.findById("USERNAME");
         assertEquals(Optional.empty(), foundAccount);
     }
 
     @Test
     void shouldFindByData() {
-        Account account1 = new Account("user1", "pass");
-        Account account2 = new Account("user2", "pass");
-        accountRepository.save(account1);
-        accountRepository.save(account2);
-        List<Account> foundAccounts = accountRepository.findByData("pass", Account::getPassword).get();
+        User user1 = new User("user1", "pass");
+        User user2 = new User("user2", "pass");
+        userRepository.save(user1);
+        userRepository.save(user2);
+        List<User> foundUsers = userRepository.findByData("pass", User::getPassword).get();
 
-        assertEquals(account1.getPassword(), foundAccounts.get(0).getPassword());
-        assertEquals(account2.getPassword(), foundAccounts.get(1).getPassword());
+        assertEquals(user1.getPassword(), foundUsers.get(0).getPassword());
+        assertEquals(user2.getPassword(), foundUsers.get(1).getPassword());
     }
 
     @Test
     void shouldNotFindByData() {
-        Optional<List<Account>> foundAccounts = accountRepository.findByData("This pass doesn't exists", Account::getPassword);
+        Optional<List<User>> foundAccounts = userRepository.findByData("This pass doesn't exists", User::getPassword);
         assertEquals(Optional.empty(), foundAccounts);
     }
 
     @Test
     void shouldFindAll() {
-        Account account1 = new Account("user1", "pass");
-        Account account2 = new Account("user2", "pass");
-        accountRepository.save(account1);
-        accountRepository.save(account2);
-        long repositorySizeAfterSave = accountRepository.count();
+        User user1 = new User("user1", "pass");
+        User user2 = new User("user2", "pass");
+        userRepository.save(user1);
+        userRepository.save(user2);
+        long repositorySizeAfterSave = userRepository.count();
 
-        List<Account> foundAccounts = accountRepository.findAll().get();
-        long foundAccountsSize = foundAccounts.size();
+        List<User> foundUsers = userRepository.findAll().get();
+        long foundAccountsSize = foundUsers.size();
 
         assertEquals(repositorySizeAfterSave, foundAccountsSize);
     }
 
     @Test
     void shouldNotFindAll() {
-        Optional<List<Account>> foundAccounts = accountRepository.findAll();
+        Optional<List<User>> foundAccounts = userRepository.findAll();
         assertEquals(Optional.empty(), foundAccounts);
     }
 }
