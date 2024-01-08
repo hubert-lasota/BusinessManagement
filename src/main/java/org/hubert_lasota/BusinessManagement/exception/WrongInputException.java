@@ -1,8 +1,8 @@
 package org.hubert_lasota.BusinessManagement.exception;
 
-import static org.hubert_lasota.BusinessManagement.ui.FrameGenerator.createStarFrame;
+import static org.hubert_lasota.BusinessManagement.console.ui.BorderGenerator.createStarBorder;
 
-public class WrongInputException extends Exception {
+public class WrongInputException extends RuntimeException {
 
     public WrongInputException() {
         super("WRONG INPUT!");
@@ -12,7 +12,7 @@ public class WrongInputException extends Exception {
         try {
             throw new WrongInputException();
         } catch (WrongInputException e) {
-            System.out.println(createStarFrame(e.getMessage()));
+            System.out.println(createStarBorder(e.getMessage()));
         }
     }
 }
