@@ -1,7 +1,8 @@
-package org.hubert_lasota.BusinessManagement.ui;
+package org.hubert_lasota.BusinessManagement.console.ui;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BorderGeneratorTest {
 

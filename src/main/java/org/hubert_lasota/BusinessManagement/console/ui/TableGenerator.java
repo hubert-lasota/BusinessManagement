@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.ui;
+package org.hubert_lasota.BusinessManagement.console.ui;
 
 /**
  * The {@code TableGenerator} class provides static methods for generating simple text-based tables
@@ -52,7 +52,7 @@ public class TableGenerator {
      *
      * @param title   The title of the table.
      * @param content The content rows of the table.
-     * @return A string representing the generated table.
+     * @return {@link  String} representing the generated table.
      * @throws UnsupportedOperationException If the length of the title or content exceeds the maximum allowed width which is 50.
      */
     public static String createTable(String title, String... content) {

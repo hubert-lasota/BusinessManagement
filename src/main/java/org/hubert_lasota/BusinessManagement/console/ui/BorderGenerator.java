@@ -1,10 +1,10 @@
-package org.hubert_lasota.BusinessManagement.ui;
+package org.hubert_lasota.BusinessManagement.console.ui;
 
 /**
  * The {@code BorderGenerator} class provides static methods for creating bordered strings, allowing users
  * to generate both normal and star borders around specified content.
  *
- * Example:
+ * <p>Example:
  * <pre>{@code
  * String[] content = {"Row 1", "Row 2", "Longest Row"};
  *
