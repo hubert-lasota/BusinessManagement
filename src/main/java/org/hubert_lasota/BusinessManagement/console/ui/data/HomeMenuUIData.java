@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.ui;
+package org.hubert_lasota.BusinessManagement.console.ui.data;
 
 public class HomeMenuUIData {
     public static final String HOME_MENU_TITLE = "HOME MENU";

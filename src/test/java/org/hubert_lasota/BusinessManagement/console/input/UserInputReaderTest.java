@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.input;
+package org.hubert_lasota.BusinessManagement.console.input;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +46,7 @@ public class UserInputReaderTest {
             method.invoke(null, Integer.class, "invalid");
         } catch (InvocationTargetException e) {
             Throwable actualException = e.getCause();
-            assertTrue(actualException instanceof NumberFormatException);
+            assertInstanceOf(NumberFormatException.class, actualException);
         }
     }
 
@@ -59,7 +59,7 @@ public class UserInputReaderTest {
             method.invoke(null, Double.class, "3.14");
         } catch (InvocationTargetException e) {
             Throwable actualException = e.getCause();
-            assertTrue(actualException instanceof IllegalArgumentException);
+            assertInstanceOf(IllegalArgumentException.class, actualException);
             assertEquals("Unsupported number type", actualException.getMessage());
         }
     }

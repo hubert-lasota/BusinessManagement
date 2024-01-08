@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.employee;
+package org.hubert_lasota.BusinessManagement.entity.employee;
 
 public enum EmployeeProfession {
     DEVELOPER,

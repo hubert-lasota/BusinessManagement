@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.ui;
+package org.hubert_lasota.BusinessManagement.console.ui.data;
 
 public class ProductMenuUIData {
     public static final String PRODUCT_MENU_TITLE = "PRODUCT MENU";
@@ -17,9 +17,8 @@ public class ProductMenuUIData {
     };
 
     public static final String[] PRODUCT_MENU_OPEN_EDITOR_MESSAGE = {
-            "If you want to open editor on product",
-            "Type product's ID",
-            "If you want to quit. Type 'q'"
+            "If you want to open editor, type yes.",
+            "If you want to quit type no"
     };
 
     public static final String[] PRODUCT_MENU_EDITOR_CONTENT = {
@@ -34,8 +33,9 @@ public class ProductMenuUIData {
 
     public static final String[] PRODUCT_MENU_FIND_PRODUCTS_CONTENT = {
             "Do you want to search by:",
-            "1. Name",
-            "2. Price",
-            "3. Description"
+            "1. ID",
+            "2. Name",
+            "3. Price",
+            "4. Description"
     };
 }

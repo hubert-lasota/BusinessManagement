@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.user;
+package org.hubert_lasota.BusinessManagement.entity.user;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +22,7 @@ public class User {
     }
 
     public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+        this(username, password, "");
     }
 
     public Long getEmployeeId() {
@@ -73,10 +72,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "User{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
     }
+
 }

@@ -1,8 +1,10 @@
-package org.hubert_lasota.BusinessManagement.input;
+package org.hubert_lasota.BusinessManagement.console.input;
 
 import org.hubert_lasota.BusinessManagement.exception.WrongInputException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 
@@ -49,6 +51,17 @@ public class UserInputReader {
             } else {
                 throw new IllegalArgumentException("Unsupported number type");
             }
+    }
+
+    public static LocalDate readLocalDate() {
+        while (true) {
+            try {
+                String localDate = readLine();
+                return LocalDate.parse(localDate);
+            } catch (DateTimeParseException e) {
+                WrongInputException.throwAndCatchException();
+            }
+        }
     }
 
 }

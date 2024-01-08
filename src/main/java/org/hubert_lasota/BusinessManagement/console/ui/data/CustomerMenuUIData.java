@@ -1,4 +1,4 @@
-package org.hubert_lasota.BusinessManagement.ui;
+package org.hubert_lasota.BusinessManagement.console.ui.data;
 
 public class CustomerMenuUIData {
     public static final String CUSTOMER_MENU_TITLE = "CUSTOMER MENU";
@@ -29,20 +29,16 @@ public class CustomerMenuUIData {
     };
 
     public static final String[] CUSTOMER_MENU_OPEN_EDITOR_MESSAGE = {
-            "If you want to open editor on customer",
-            "Type customer's ID",
-            "If you want to quit. Type 'q'"
+            "If you want to open editor on customer, ",
+            "type customer's ID.",
+            "If you want to quit, type 'q'"
     };
 
 
     public static final String[] CUSTOMER_MENU_EDITOR_CONTENT = {
             "1. Change customer's name",
-            "2. Change customer's ",
-                "\tstreet with number",
-            "3. Change customer's postal code",
-            "4. Change customer's city",
-            "5. Change customer's country",
-            "6. Delete this customer",
-            "7. Go back to customer's menu"
+            "2. Change customer's address",
+            "3. Delete this customer",
+            "4. Go back to customer's menu"
     };
 }
