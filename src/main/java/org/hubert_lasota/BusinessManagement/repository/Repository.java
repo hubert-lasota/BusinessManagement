@@ -3,7 +3,6 @@ package org.hubert_lasota.BusinessManagement.repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * The {@code Repository} interface defines the basic operations for a generic repository
@@ -29,15 +28,6 @@ public interface Repository <T, ID> {
      * @return An {@link Optional} containing the retrieved entity, or an empty {@code Optional} if not found.
      */
     Optional<T> findById(ID id);
-
-    /**
-     * Retrieves a list of entities that match the provided data based on the given field extractor.
-     *
-     * @param data The data to match against.
-     * @param fieldExtractor A function to extract a specific field from an entity as a string.
-     * @return An {@code Optional} containing a list of matching entities, or an empty {@code Optional} if none found.
-     */
-    Optional<List<T>> findByData(String data, Function<T, String> fieldExtractor);
 
     /**
      * Retrieves a list of all entities in the repository.
