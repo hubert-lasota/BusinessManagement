@@ -1,40 +1,24 @@
 package org.hubert_lasota.BusinessManagement.security;
 
-import org.hubert_lasota.BusinessManagement.account.Account;
-import org.hubert_lasota.BusinessManagement.repository.AccountRepository;
-
-import java.util.List;
+import org.hubert_lasota.BusinessManagement.entity.user.User;
+import org.hubert_lasota.BusinessManagement.service.UserService;
 
 public class SecurityManager implements Security {
-    private static SecurityManager securityManager;
-    private AccountRepository accountRepository;
+    private final UserService userService;
 
-    private SecurityManager() {
-        accountRepository = AccountRepository.getInstance();
+    public SecurityManager(UserService userService) {
+        this.userService = userService;
     }
-
-    public static SecurityManager getInstance() {
-        if(securityManager == null) {
-            securityManager = new SecurityManager();
-        }
-        return securityManager;
-    }
-
 
     @Override
     public boolean authenticate(String username, String password) {
-        List<Account> tempList = accountRepository.findByData(username, Account::getUsername);
-        for(Account tempAccount : tempList) {
-            if(tempAccount.getPassword().equals(password)) {
-                return true;
-            }
-        }
-        return false;
+        User user = userService.findUserById(username);
+        return user.getPassword().equals(password);
     }
 
     @Override
-    public boolean isAuthorized(String role, Account account) {
-        return account.getRoles().stream()
+    public boolean isAuthorized(String role, User user) {
+        return user.getRoles().stream()
                 .anyMatch(r -> r.equals(role));
     }
 
