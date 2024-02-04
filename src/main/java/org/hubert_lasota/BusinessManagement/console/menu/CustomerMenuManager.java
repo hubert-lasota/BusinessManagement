@@ -58,8 +58,9 @@ public class CustomerMenuManager implements Menu {
         do {
             Customer customer = customerForm();
             customerService.saveCustomer(customer);
-            Address address = addressService.findAddressById(customer.getAddressId());
+            Address address = addressForm();
             addressService.saveCustomerAddress(customer.getId(), address);
+            customer.setAddressId(address.getId());
         } while (continueInput("Do you want to add another customer yes/no?", "no"));
     }
 
@@ -67,8 +68,7 @@ public class CustomerMenuManager implements Menu {
         System.out.println(createTableHeader("ADDING NEW CUSTOMER"));
         System.out.print("Type customer's name: ");
         String name = readLine();
-        Address address = addressForm();
-        return new Customer(name, address.getId());
+        return new Customer(name, null);
     }
 
     private Address addressForm() {

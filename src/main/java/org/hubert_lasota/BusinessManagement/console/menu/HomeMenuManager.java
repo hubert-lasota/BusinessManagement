@@ -53,15 +53,9 @@ public class HomeMenuManager implements Menu {
                    userMenuManager.generateMenu();
                    break;
                case 5:
-                   // TODO: implement warehouse
-                   break;
-               case 6:
-                   // TODO: implement admin menu;
-                   break;
-               case 7:
                    System.out.println(createBorder(HOME_MENU_LOG_OUT_MESSAGE));
                    return;
-               case 8:
+               case 6:
                    exit();
                default:
                    WrongInputException.throwAndCatchException();
