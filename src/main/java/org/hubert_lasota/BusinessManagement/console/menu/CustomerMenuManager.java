@@ -61,6 +61,8 @@ public class CustomerMenuManager implements Menu {
             Address address = addressForm();
             addressService.saveCustomerAddress(customer.getId(), address);
             customer.setAddressId(address.getId());
+            addressService.saveCustomerAddress(customer.getId(), address);
+
         } while (continueInput("Do you want to add another customer yes/no?", "no"));
     }
 
